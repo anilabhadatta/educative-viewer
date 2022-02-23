@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <title>Educative Viewer</title>
+</head>
+<body style="zoom: 80%">
+    <br>
+    <h1 style="text-align: center;">Educative Viewer</h1>
+    <br>
+    <div style="text-align: center;">
+        <form action="/topics" method="POST">
+            <input name="back" id="back" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Back">
+            <input name="home" id="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
+            {%if code_present %}
+            <input name="code" id="code" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Code">
+            {%endif %}
+            <input name="forward" id="forward" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Forward">
+        </form>
+
+    </div>
+    <div>
+    <br>
+    <h4 style="text-align: center;">Current Topic: {{webpage}}</h4>
+    {% include webpage %}
+    </div>
+</body>
+</html>

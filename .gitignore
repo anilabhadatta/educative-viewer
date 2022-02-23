@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# custom
+dist
+build
+.spec
+pyinstaller_command.txt
