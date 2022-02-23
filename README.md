@@ -33,7 +33,7 @@
 #### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
 ![image](https://i.imgur.com/sQQlJGI.jpg)
 
-### Step 5: To build the python application using pyinstaller:
+### Step 6 (Optional): To build the python application using pyinstaller:
 
 #### Install pyinstaller in your system virtual environment using pip
 
