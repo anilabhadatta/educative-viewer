@@ -28,10 +28,10 @@
 
 #### > (For MacOS) python3 educative-scraper.py
 
-### Step 5: Enter the course folder path in terminal and server will automatically start,
-#### Enter 127.0.0.1:5000 in your browser to open the viewer
-#### Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
-![folder_image](https://imgur.com/a/MkHbkoS)
+### Step 5: Enter the course folder path in terminal and server will automatically start
+#### > Enter 127.0.0.1:5000 in your browser to open the viewer
+#### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
+![folder_image](https://imgur.com/sQQlJGI)
 
 ### Step 5: To build the python application using pyinstaller:
 
