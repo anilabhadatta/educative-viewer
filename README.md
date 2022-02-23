@@ -29,7 +29,8 @@
 #### > (For MacOS) python3 educative-scraper.py
 
 ### Step 5: Enter the course folder path in terminal and server will automatically start
-#### > Enter 127.0.0.1:5000 in your browser to open the viewer
+#### > Enter localhost:5000 in your desktop browser to open the viewer
+#### > Enter local_server_address:5000 in your mobile browser to open the viewer
 #### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
 ![image](https://i.imgur.com/sQQlJGI.jpg)
 
