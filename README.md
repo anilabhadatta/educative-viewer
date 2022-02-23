@@ -31,7 +31,7 @@
 ### Step 5: Enter the course folder path in terminal and server will automatically start
 #### > Enter 127.0.0.1:5000 in your browser to open the viewer
 #### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/MkHbkoS" data-context="false" ><a href="//imgur.com/a/MkHbkoS"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+!(image)[https://imgur.com/sQQlJGI]
 
 ### Step 5: To build the python application using pyinstaller:
 
