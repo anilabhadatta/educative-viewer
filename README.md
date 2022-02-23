@@ -22,13 +22,18 @@
 
 #### > (For MacOS) pip3 install -r requirements.txt
 
-### Step 4: Run the following command in the virtual environment to start the server:
+### Step 4: Run the following command in the virtual environment:
 
 #### > (For Windows) python educative-scraper.py
 
 #### > (For MacOS) python3 educative-scraper.py
 
-### Step 5: To build the python application using pyinstaller:
+### Step 5: Enter the course folder path in terminal and server will automatically start
+#### > Enter 127.0.0.1:5000 in your browser to open the viewer
+#### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
+![image](https://i.imgur.com/sQQlJGI.jpg)
+
+### Step 6 (Optional): To build the python application using pyinstaller:
 
 #### Install pyinstaller in your system virtual environment using pip
 
