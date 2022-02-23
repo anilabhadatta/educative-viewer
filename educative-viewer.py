@@ -11,7 +11,8 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    topic_folders = natsort.natsorted(os.listdir(course_directory))
+    topic_folders = natsort.natsorted(load_folder(course_directory))
+    print(topic_folders)
     if request.method == "POST":
         for key in request.form.keys():
             topic = key
@@ -24,11 +25,18 @@ def check_code_present(topic):
         return True
     return False
 
+def load_folder(course_directory):
+    folders = [os.path.join(course_directory, f) for f in os.listdir(course_directory)]
+    res = []
+    for folder in folders:
+        if os.path.isdir(folder):
+            res.append(os.path.split(folder)[-1])
+    return res
 
 @app.route("/<topics>", methods=['GET', 'POST'])
 def topics(topics):
     global itr
-    topic_folders = natsort.natsorted(os.listdir(course_directory))
+    topic_folders = natsort.natsorted(load_folder(course_directory))
     try:
         itr = int(topic_folders.index(topics))
     except ValueError:
@@ -82,4 +90,4 @@ if __name__ == "__main__":
             app.run(threaded=True)
         else:
             print("Invalid path")
-            os.system("pause")
+            input("Press enter to continue")
