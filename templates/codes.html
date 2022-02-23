@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asset/icon.ico') }}">
+    <title>Codes</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Codes</h1>
+    {% for content in file_contents%}
+    {% autoescape false %}
+    <div style="border:1px solid black;">
+        <h4>{{file_names[loop.index0]}}</h4>
+        <pre style="word-wrap: break-word; white-space: pre-wrap;">
+            {{content}}
+        </pre>
+    </div>
+    {% endautoescape %}
+    {% endfor %}
+    
+</body>
+</html>

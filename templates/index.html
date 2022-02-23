@@ -5,17 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asset/icon.ico') }}">
     <title>Educative Viewer</title>
 </head>
 <body>
     <br>
     <h1 style="text-align: center;">Educative Viewer</h1>
     <form action="/" method="POST">
-        <ul>
+        
         {% for topic in topic_list %}
-            <li><input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="{{topic}}" id="{{topic}}" value="{{topic}}"></li>
+            <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="{{topic}}" id="{{topic}}" value="{{topic}}">
         {%endfor%}
-        </ul>
+        
     </form>
 </body>
 </html>

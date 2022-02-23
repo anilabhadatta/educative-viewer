@@ -25,13 +25,32 @@ def check_code_present(topic):
         return True
     return False
 
+
 def load_folder(course_directory):
-    folders = [os.path.join(course_directory, f) for f in os.listdir(course_directory)]
+    folders = [os.path.join(course_directory, f)
+               for f in os.listdir(course_directory)]
     res = []
     for folder in folders:
         if os.path.isdir(folder):
             res.append(os.path.split(folder)[-1])
     return res
+
+
+def load_files(topic_directory):
+    file_contents, file_names = [], []
+    for root, _, files in os.walk(os.path.join(course_directory, topic_directory)):
+        for file in files:
+            file_path = os.path.join(root, file)
+            if os.path.isfile(file_path) and topic_directory not in file:
+                with open(file_path, 'r') as f:
+                    f = f.readlines()
+                content = "\n"
+                for line in f:
+                    content += f'''{line}'''
+                file_contents.append(content)
+                file_names.append(file_path)
+    return file_contents, file_names
+
 
 @app.route("/<topics>", methods=['GET', 'POST'])
 def topics(topics):
@@ -50,7 +69,10 @@ def topics(topics):
     if request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
-    if request.method == 'POST' and request.form.get("code"):
+    if request.method == 'POST' and request.form.get("code_browser"):
+        file_contents, file_names = load_files(topic_folders[itr])
+        return render_template("codes.html", file_contents=file_contents, file_names=file_names)
+    if request.method == 'POST' and request.form.get("code_filesystem"):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
@@ -87,7 +109,7 @@ if __name__ == "__main__":
                                          f'{course_directory}']),
             ])
             app.jinja_loader = my_loader
-            app.run(threaded=True)
+            app.run(host="0.0.0.0", threaded=True, debug=True)
         else:
             print("Invalid path")
             input("Press enter to continue")

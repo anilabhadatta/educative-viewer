@@ -1,0 +1,15 @@
+@media only screen and (min-width: 0px) and (max-width: 1100px) {
+  .image_mobile {
+    display: block !important;
+  }
+  .image_mobile > div > img {
+    width: 100% !important;
+  }
+  .image_desktop {
+    display: none;
+  }
+}
+
+.image_mobile {
+  display: none;
+}
