@@ -4,10 +4,13 @@ from flask import Flask, render_template, request, redirect
 import jinja2
 import os
 import natsort
+import socket
+
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
+ip_address = ""
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -18,6 +21,14 @@ def index():
             topic = key
         return redirect(f"/{topic}")
     return render_template("index.html", topic_list=topic_folders)
+
+
+def get_ip():
+    global ip_address
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip_address = s.getsockname()[0]
+    s.close()
 
 
 def check_code_present(topic):
@@ -62,10 +73,10 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}")
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", ip=ip_address)
     elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address)
     elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
@@ -73,7 +84,7 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address)
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
@@ -101,6 +112,7 @@ if __name__ == "__main__":
                         -> Enter Course path to start the server
                         -> Leave Blank and press Enter to exit
         ''')
+        get_ip()
         course_directory = input("User Input: ")
         if course_directory == '':
             break
