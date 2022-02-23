@@ -1,3 +1,4 @@
+from distutils.log import debug
 import webbrowser
 from flask import Flask, render_template, request, redirect
 import jinja2
@@ -12,7 +13,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     topic_folders = natsort.natsorted(load_folder(course_directory))
-    print(topic_folders)
     if request.method == "POST":
         for key in request.form.keys():
             topic = key
@@ -42,7 +42,7 @@ def load_files(topic_directory):
         for file in files:
             file_path = os.path.join(root, file)
             if os.path.isfile(file_path) and topic_directory not in file:
-                with open(file_path, 'r') as f:
+                with open(file_path, 'r', encoding='utf-8') as f:
                     f = f.readlines()
                 content = "\n"
                 for line in f:
@@ -62,21 +62,24 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html")
-    if request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}")
+    elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html")
-    if request.method == 'POST' and request.form.get("home"):
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+    elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
-    if request.method == 'POST' and request.form.get("code_browser"):
-        file_contents, file_names = load_files(topic_folders[itr])
-        return render_template("codes.html", file_contents=file_contents, file_names=file_names)
-    if request.method == 'POST' and request.form.get("code_filesystem"):
+    elif request.method == 'POST' and request.form.get("code_filesystem"):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html")
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+
+
+@app.route("/code/<codes>", methods=['GET', 'POST'])
+def codes(codes):
+    file_contents, file_names = load_files(codes)
+    return render_template("codes.html", file_contents=file_contents, file_names=file_names)
 
 
 def clear():
@@ -92,7 +95,7 @@ if __name__ == "__main__":
         clear()
         print('''
                         Educative viewer, made by Anilabha Datta
-                        Project Link: github.com/anilabhadatta/educative-viewer
+                        Project Link: https://github.com/anilabhadatta/educative-viewer
                         Read the documentation for more information about this project.
 
                         -> Enter Course path to start the server
