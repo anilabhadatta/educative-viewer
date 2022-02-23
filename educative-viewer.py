@@ -109,7 +109,7 @@ if __name__ == "__main__":
                                          f'{course_directory}']),
             ])
             app.jinja_loader = my_loader
-            app.run(host="0.0.0.0", threaded=True, debug=True)
+            app.run(host="0.0.0.0", threaded=True)
         else:
             print("Invalid path")
             input("Press enter to continue")
