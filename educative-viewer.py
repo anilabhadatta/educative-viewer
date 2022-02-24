@@ -22,7 +22,6 @@ def index():
         for key in request.form.keys():
             topic = key
         if topic+".html" in os.listdir(os.path.join(course_directory, topic)):
-            print("True")
             return redirect(f"/{topic}")
         else:
             return render_template("index.html", topic_list=topic_folders, no_template=True, topic=topic)
@@ -44,13 +43,12 @@ def check_code_present(topic):
 
 
 def load_folder(course_directory):
-    folders = [os.path.join(course_directory, f)
-               for f in os.listdir(course_directory)]
-    res = []
-    for folder in folders:
-        if os.path.isdir(folder):
-            res.append(os.path.split(folder)[-1])
-    return res
+    folders_paths = []
+    for folders in os.listdir(course_directory):
+        folder_path = os.path.join(course_directory, folders)
+        if os.path.isdir(folder_path) and os.path.isfile(os.path.join(folder_path, folders+".html")):
+            folders_paths.append(folders)
+    return folders_paths
 
 
 def load_files(topic_directory):
