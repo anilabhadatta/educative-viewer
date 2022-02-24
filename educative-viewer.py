@@ -56,12 +56,16 @@ def load_files(topic_directory):
     for root, _, files in os.walk(os.path.join(course_directory, topic_directory)):
         for file in files:
             file_path = os.path.join(root, file)
-            if os.path.isfile(file_path) and topic_directory not in file and ".DS_Store" not in file_path:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    f = f.readlines()
+            if os.path.isfile(file_path) and topic_directory not in file:
                 content = "\n"
-                for line in f:
-                    content += f'''{line}'''
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        f = f.readlines()
+
+                    for line in f:
+                        content += f'''{line}'''
+                except Exception:
+                    pass
                 h_map[file_path] = content
     file_path_keys = natsort.natsorted(list(h_map.keys()))
     for file_path in file_path_keys:
