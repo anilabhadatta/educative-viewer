@@ -11,12 +11,14 @@
 <body>
     <br>
     <h1 style="text-align: center;">Educative Viewer</h1>
+    {%if no_template %}
+       <p>{{topic}}.html not found</p>
+    {%endif %}
     <form action="/" method="POST">
         
         {% for topic in topic_list %}
             <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="{{topic}}" id="{{topic}}" value="{{topic}}">
         {%endfor%}
-        
     </form>
 </body>
 </html>

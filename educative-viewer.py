@@ -1,11 +1,13 @@
+from collections import defaultdict
 from distutils.log import debug
+import hmac
 import webbrowser
 from flask import Flask, render_template, request, redirect
 import jinja2
 import os
 import natsort
 import socket
-
+from collections import defaultdict
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,7 +21,11 @@ def index():
     if request.method == "POST":
         for key in request.form.keys():
             topic = key
-        return redirect(f"/{topic}")
+        if topic+".html" in os.listdir(os.path.join(course_directory, topic)):
+            print("True")
+            return redirect(f"/{topic}")
+        else:
+            return render_template("index.html", topic_list=topic_folders, no_template=True, topic=topic)
     return render_template("index.html", topic_list=topic_folders)
 
 
@@ -48,7 +54,7 @@ def load_folder(course_directory):
 
 
 def load_files(topic_directory):
-    file_contents, file_names = [], []
+    file_contents, file_names, h_map = [], [], defaultdict(str)
     for root, _, files in os.walk(os.path.join(course_directory, topic_directory)):
         for file in files:
             file_path = os.path.join(root, file)
@@ -58,8 +64,11 @@ def load_files(topic_directory):
                 content = "\n"
                 for line in f:
                     content += f'''{line}'''
-                file_contents.append(content)
-                file_names.append(file_path)
+                h_map[file_path] = content
+    file_path_keys = natsort.natsorted(list(h_map.keys()))
+    for file_path in file_path_keys:
+        file_contents.append(h_map[file_path])
+        file_names.append(file_path)
     return file_contents, file_names
 
 
@@ -124,6 +133,7 @@ if __name__ == "__main__":
                                          f'{course_directory}']),
             ])
             app.jinja_loader = my_loader
+            print(f"For mobile view use {ip_address}:5000")
             app.run(host="0.0.0.0", threaded=True)
         else:
             print("Invalid path")
