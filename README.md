@@ -7,25 +7,25 @@
 
 ### Step 1: Install the virtualenv package for python3 and create a virtual environment
 
-      ``` 
+      
       pip3 install virtualenv 
       virtualenv env 
-      ```
+      
 
 ### Step 2: Activate the environment
 #### > (For Windows) 
-      ```
+      
       env\Scripts\activate
-      ```
+      
 #### > (For MacOS/Linux) 
-      ```
+      
       source env/bin/activate
-      ```
+      
 ### Step 3: Install the required modules and start the educative-scraper using the following commands:
-      ```
+      
       pip3 install -r requirements.txt
       python3 educative-scraper.py
-      ```
+      
 
 ### Step 4: Enter the course folder path in terminal and server will automatically start
 #### > Enter local_server_ip:5000 in your desktop/mobile browser to open the viewer
@@ -34,14 +34,14 @@
 
 ### Step 5 (Optional): To build the educative-scraper using pyinstaller:
 #### Install the pyinstaller package and run the following commands
-      ```
+      
       pip3 install pyinstaller
-      ```
+      
 #### > (For Windows) 
-      ```
+      
       pyinstaller --clean --add-data templates;templates --onefile -i"icon.ico" educative-viewer.py
-      ```
+      
 #### > (For MacOS/Linux) 
-      ```
+      
       pyinstaller --clean --add-data templates:templates --onefile -i"icon.ico" educative-viewer.py
-      ```
+      
