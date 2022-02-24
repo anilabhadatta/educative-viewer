@@ -56,7 +56,7 @@ def load_files(topic_directory):
     for root, _, files in os.walk(os.path.join(course_directory, topic_directory)):
         for file in files:
             file_path = os.path.join(root, file)
-            if os.path.isfile(file_path) and topic_directory not in file:
+            if os.path.isfile(file_path) and topic_directory not in file and ".DS_Store" not in file_path:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     f = f.readlines()
                 content = "\n"
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                                          f'{course_directory}']),
             ])
             app.jinja_loader = my_loader
-            print(f"For mobile view use {ip_address}:5000")
+            print(f"For Mobile/Desktop view use {ip_address}:5000")
             app.run(host="0.0.0.0", threaded=True)
         else:
             print("Invalid path")
