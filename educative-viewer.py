@@ -1,6 +1,3 @@
-from collections import defaultdict
-from distutils.log import debug
-import hmac
 import webbrowser
 from flask import Flask, render_template, request, redirect
 import jinja2
@@ -8,11 +5,13 @@ import os
 import natsort
 import socket
 from collections import defaultdict
+import random
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
 ip_address = ""
+port = random.randint(1000, 9999)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -29,10 +28,12 @@ def index():
 
 
 def get_ip():
-    global ip_address
+    global ip_address, port
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     ip_address = s.getsockname()[0]
+    while s.connect_ex((ip_address, port)) != 0:
+        port = random.randint(1000, 9999)
     s.close()
 
 
@@ -61,7 +62,6 @@ def load_files(topic_directory):
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
                         f = f.readlines()
-
                     for line in f:
                         content += f'''{line}'''
                 except Exception:
@@ -84,10 +84,10 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", ip=ip_address)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
     elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
     elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
@@ -95,7 +95,7 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address)
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
@@ -135,8 +135,8 @@ if __name__ == "__main__":
                                          f'{course_directory}']),
             ])
             app.jinja_loader = my_loader
-            print(f"For Mobile/Desktop view use {ip_address}:5000")
-            app.run(host="0.0.0.0", threaded=True)
+            print(f"For Mobile/Desktop view use {ip_address}:{port}")
+            app.run(host="0.0.0.0", threaded=True, port=port)
         else:
             print("Invalid path")
             input("Press enter to continue")

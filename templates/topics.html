@@ -23,7 +23,7 @@
             <div style="margin-top: 5px">
                 
                 {%if code_present %}
-                <a target="_blank" class="btn btn-primary btn-file" style="text-align: center;" href="http://{{ip}}:5000/code/{{folder}}">Open Code in Browser</a>
+                <a target="_blank" class="btn btn-primary btn-file" style="text-align: center;" href="http://{{ip}}:{{port}}/code/{{folder}}">Open Code in Browser</a>
                 <input target="_blank" name="code_filesystem" id="code_filesystem" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Open Code in File System">
                 {%endif %}
                
