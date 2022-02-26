@@ -21,10 +21,10 @@
       
       source env/bin/activate
       
-### Step 3: Install the required modules and start the educative-scraper using the following commands:
+### Step 3: Install the required modules and start the educative-viewer using the following commands:
       
       pip3 install -r requirements.txt
-      python3 educative-scraper.py
+      python3 educative-viewer.py
       
 
 ### Step 4: Enter the course folder path in terminal and server will automatically start
@@ -32,7 +32,7 @@
 #### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
 ![image](https://i.imgur.com/sQQlJGI.jpg)
 
-### Step 5 (Optional): To build the educative-scraper using pyinstaller:
+### Step 5 (Optional): To build the educative-viewer using pyinstaller:
 #### Install the pyinstaller package and run the following commands
       
       pip3 install pyinstaller
