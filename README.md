@@ -39,9 +39,9 @@
       
 #### > (For Windows) 
       
-      pyinstaller --clean --add-data templates;templates --onefile -i"icon.ico" educative-viewer.py
+      pyinstaller --clean --add-data templates;templates --add-data static;static --onefile -i"icon.ico" educative-viewer.py
       
 #### > (For MacOS/Linux) 
       
-      pyinstaller --clean --add-data templates:templates --onefile -i"icon.ico" educative-viewer.py
+      pyinstaller --clean --add-data templates:templates --add-data static:static --onefile -i"icon.ico" educative-viewer.py
       
