@@ -114,31 +114,35 @@ def clear():
 
 
 if __name__ == "__main__":
+    try:
+        while True:
+            clear()
+            print('''
+                            Educative viewer, made by Anilabha Datta
+                            Project Link: https://github.com/anilabhadatta/educative-viewer
+                            Read the documentation for more information about this project.
 
-    while True:
-        clear()
-        print('''
-                        Educative viewer, made by Anilabha Datta
-                        Project Link: https://github.com/anilabhadatta/educative-viewer
-                        Read the documentation for more information about this project.
-
-                        -> Enter Course path to start the server
-                        -> Leave Blank and press Enter to exit
-        ''')
-        get_ip()
-        course_directory = input("User Input: ")
-        if course_directory == '':
-            break
-        elif os.path.isdir(course_directory):
-            itr = 0
-            my_loader = jinja2.ChoiceLoader([
-                app.jinja_loader,
-                jinja2.FileSystemLoader([f'{ROOT_DIR}/templates',
-                                         f'{course_directory}']),
-            ])
-            app.jinja_loader = my_loader
-            print(f"For Mobile/Desktop view use {ip_address}:{port}")
-            app.run(host="0.0.0.0", threaded=True, port=port)
-        else:
-            print("Invalid path")
-            input("Press enter to continue")
+                            -> Enter Course path to start the server
+                            -> Leave Blank and press Enter to exit
+            ''')
+            get_ip()
+            course_directory = input("User Input: ")
+            if course_directory == '':
+                break
+            elif os.path.isdir(course_directory):
+                itr = 0
+                my_loader = jinja2.ChoiceLoader([
+                    app.jinja_loader,
+                    jinja2.FileSystemLoader([f'{ROOT_DIR}/templates',
+                                            f'{course_directory}']),
+                ])
+                app.jinja_loader = my_loader
+                print(f"For Mobile/Desktop view use {ip_address}:{port}")
+                app.run(host="0.0.0.0", threaded=True, port=port)
+            else:
+                print("Invalid path")
+                input("Press enter to continue")
+    except KeyboardInterrupt:
+        print("Exited")
+    except Exception as e:
+        print("Exited")
