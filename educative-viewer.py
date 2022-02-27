@@ -17,14 +17,15 @@ port = random.randint(1000, 9999)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     topic_folders = natsort.natsorted(load_folder(course_directory))
+    course = os.path.split(course_directory)[-1]
     if request.method == "POST":
         for key in request.form.keys():
             topic = key
         if topic+".html" in os.listdir(os.path.join(course_directory, topic)):
             return redirect(f"/{topic}")
         else:
-            return render_template("index.html", topic_list=topic_folders, no_template=True, topic=topic)
-    return render_template("index.html", topic_list=topic_folders)
+            return render_template("index.html", topic_list=topic_folders, no_template=True, topic=topic, course=course)
+    return render_template("index.html", topic_list=topic_folders, course=course)
 
 
 def get_ip():
