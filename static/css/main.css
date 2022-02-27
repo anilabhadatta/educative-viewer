@@ -6,7 +6,8 @@ h1,
 h2,
 h3,
 p,
-h4 {
+h4,
+pre {
   color: white;
 }
 @media only screen and (min-width: 0px) and (max-width: 1100px) {
