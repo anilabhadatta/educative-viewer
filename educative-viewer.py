@@ -1,4 +1,3 @@
-from distutils.log import debug
 import webbrowser
 from flask import Flask, render_template, request, redirect
 import jinja2
@@ -9,24 +8,33 @@ from collections import defaultdict
 import random
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
-
 app = Flask(__name__)
 ip_address = ""
-port = random.randint(1000, 9999)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    topic_folders = natsort.natsorted(load_folder(course_directory))
-    course = os.path.split(course_directory)[-1]
-    if request.method == "POST":
-        for key in request.form.keys():
-            topic = key
-        if topic+".html" in os.listdir(os.path.join(course_directory, topic)):
-            return redirect(f"/{topic}")
-        else:
-            return render_template("index.html", topic_list=topic_folders, no_template=True, topic=topic, course=course)
-    return render_template("index.html", topic_list=topic_folders, course=course)
+    global course_directory
+
+    if request.method == "POST" and request.form.get("folder"):
+        for value in request.form.values():
+            folder = value
+        if folder+".html" in os.listdir(os.path.join(course_directory, folder)):
+            load_templates()
+            return redirect(f"/{folder}")
+        elif folder+".html" not in os.listdir(os.path.join(course_directory, folder)):
+            course_directory = os.path.join(course_directory, folder)
+            folders = natsort.natsorted(load_folder(course_directory))
+            return render_template("index.html", folder_list=folders, folder=folder)
+    elif request.method == "POST" and len(root_course_path) < len(course_directory):
+        course_directory = os.path.sep.join(
+            course_directory.split(os.path.sep)[:-1])
+        folders = natsort.natsorted(load_folder(course_directory))
+        folder = os.path.split(course_directory)[-1]
+        return render_template("index.html", folder_list=folders, folder=folder)
+    folders = natsort.natsorted(load_folder(course_directory))
+    folder = os.path.split(course_directory)[-1]
+    return render_template("index.html", folder_list=folders, folder=folder)
 
 
 def get_ip():
@@ -45,11 +53,20 @@ def check_code_present(topic):
     return False
 
 
-def load_folder(course_directory):
+def load_topics(course_directory):
     folders_paths = []
     for folders in os.listdir(course_directory):
         folder_path = os.path.join(course_directory, folders)
         if os.path.isdir(folder_path) and os.path.isfile(os.path.join(folder_path, folders+".html")):
+            folders_paths.append(folders)
+    return folders_paths
+
+
+def load_folder(course_directory):
+    folders_paths = []
+    for folders in os.listdir(course_directory):
+        folder_path = os.path.join(course_directory, folders)
+        if os.path.isdir(folder_path):
             folders_paths.append(folders)
     return folders_paths
 
@@ -79,7 +96,7 @@ def load_files(topic_directory):
 @app.route("/<topics>", methods=['GET', 'POST'])
 def topics(topics):
     global itr
-    topic_folders = natsort.natsorted(load_folder(course_directory))
+    topic_folders = natsort.natsorted(load_topics(course_directory))
     try:
         itr = int(topic_folders.index(topics))
     except ValueError:
@@ -113,31 +130,39 @@ def clear():
         os.system('clear')
 
 
+def load_templates():
+    my_loader = jinja2.ChoiceLoader([
+        app.jinja_loader,
+        jinja2.FileSystemLoader([f'{ROOT_DIR}/templates',
+                                 f'{course_directory}']),
+    ])
+    app.jinja_loader = my_loader
+
+
 if __name__ == "__main__":
     try:
         while True:
+            course_directory = ""
+            root_course_path = ""
             clear()
             print('''
                             Educative viewer, made by Anilabha Datta
                             Project Link: https://github.com/anilabhadatta/educative-viewer
                             Read the documentation for more information about this project.
 
-                            -> Enter Course path to start the server
                             -> Leave Blank and press Enter to exit
             ''')
+            port = random.randint(1000, 9999)
             get_ip()
-            course_directory = input("User Input: ")
+            course_directory = input("Enter Course Directory Path: ")
+            root_course_path = course_directory
             if course_directory == '':
                 break
             elif os.path.isdir(course_directory):
                 itr = 0
-                my_loader = jinja2.ChoiceLoader([
-                    app.jinja_loader,
-                    jinja2.FileSystemLoader([f'{ROOT_DIR}/templates',
-                                            f'{course_directory}']),
-                ])
-                app.jinja_loader = my_loader
-                print(f"For Mobile/Desktop view use {ip_address}:{port}")
+                load_templates()
+                print(
+                    f"\n\nClick here: http://{ip_address}:{port} to open Mobile/Desktop View\n\n")
                 app.run(host="0.0.0.0", threaded=True, port=port)
             else:
                 print("Invalid path")

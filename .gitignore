@@ -133,3 +133,4 @@ dist
 build
 .spec
 pyinstaller_command.txt
+todo.txt

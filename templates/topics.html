@@ -11,7 +11,7 @@
 </head>
 <body style="zoom: 80%">
     <br>
-    <h1 style="text-align: center;">Educative Viewer</h1>
+    <h1 id="top" style="text-align: center;">Educative Viewer</h1>
     <br>
     <div style="text-align: center;">
         <form action="/topics" method="POST">
@@ -23,7 +23,7 @@
             <div style="margin-top: 5px">
                 
                 {%if code_present %}
-                <a target="_blank" class="btn btn-primary btn-file" style="text-align: center;" href="http://{{ip}}:{{port}}/code/{{folder}}">Open Code in Browser</a>
+                <a id="code" target="_blank" class="btn btn-primary btn-file" style="text-align: center;" href="http://{{ip}}:{{port}}/code/{{folder}}">Open Code in Browser</a>
                 <input target="_blank" name="code_filesystem" id="code_filesystem" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Open Code in File System">
                 {%endif %}
                
@@ -36,10 +36,31 @@
     <h4 style="text-align: center;">Current Topic: {{webpage}}</h4>
         <div class="image_mobile">
             {% include webpage %}
+            
         </div>
         <div class="image_desktop">
             {% include webpage %}
         </div>
+        
+    </div>
+    <div style="text-align: center;">
+        <br>
+        <form action="/topics" method="POST">
+            <input name="back" id="back" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Back">
+            <input name="home" id="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
+            
+            <input name="forward" id="forward" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Forward">
+            <br>
+            <div style="margin-top: 5px">
+                
+                {%if code_present %}
+                <a id="code" target="_blank" class="btn btn-primary btn-file" style="text-align: center;" href="http://{{ip}}:{{port}}/code/{{folder}}">Open Code in Browser</a>
+                <input target="_blank" name="code_filesystem" id="code_filesystem" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Open Code in File System">
+                {%endif %}
+               
+            </div>
+        </form>
+
     </div>
 </body>
 </html>

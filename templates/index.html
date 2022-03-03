@@ -12,15 +12,20 @@
 <body>
     <br>
     <h1 style="text-align: center;">Educative Viewer</h1>
-    <h3 style="text-align: center;">{{course}}</h3>
-    {%if no_template %}
-       <p>{{topic}}.html not found</p>
-    {%endif %}
+    <h3 style="text-align: center;">{{folder}}</h3>
     <form action="/" method="POST">
-        
-        {% for topic in topic_list %}
-            <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="{{topic}}" id="{{topic}}" value="{{topic}}">
+        <div style="text-align: center;">
+            <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
+        </div>
+        <br>
+        {% for folder in folder_list %}
+            <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="folder" value="{{folder}}">
         {%endfor%}
+        <br>
+        <div style="text-align: center;">
+            <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
+        </div>
+        <br>
     </form>
 </body>
 </html>
