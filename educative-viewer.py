@@ -6,6 +6,9 @@ import natsort
 import socket
 from collections import defaultdict
 import random
+from pyngrok.conf import PyngrokConfig
+from pyngrok import conf, ngrok
+
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
@@ -103,10 +106,10 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", url=url)
     elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
     elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
@@ -114,7 +117,7 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
@@ -124,10 +127,13 @@ def codes(codes):
 
 
 def clear():
+    global ngrok_name
     if os.name == "nt":
         os.system('cls')
+        ngrok_name = "ngrok.exe"
     else:
         os.system('clear')
+        ngrok_name = ngrok
 
 
 def load_templates():
@@ -144,17 +150,30 @@ if __name__ == "__main__":
         while True:
             course_directory = ""
             root_course_path = ""
+            ngrok_name = ""
             clear()
             print('''
                             Educative viewer, made by Anilabha Datta
                             Project Link: https://github.com/anilabhadatta/educative-viewer
                             Read the documentation for more information about this project.
-
+                            
+                            -> For Ngrok, follow the official documentation of ngrok to install the auth token
                             -> Leave Blank and press Enter to exit
             ''')
             port = random.randint(1000, 9999)
             get_ip()
+            url = f"http://{ip_address}:{port}"
+            local_host_url = url
             course_directory = input("Enter Course Directory Path: ")
+            region = input(
+                "Enter region for ngrok or leave blank for local server: ")
+
+            if region:
+                conf.set_default(PyngrokConfig(
+                    region=region, ngrok_path=f"/ngrok/{ngrok_name}"))
+                url = ngrok.connect(port, bind_tls=True).public_url
+                print(ngrok.get_ngrok_process())
+
             root_course_path = course_directory
             if course_directory == '':
                 break
@@ -162,7 +181,7 @@ if __name__ == "__main__":
                 itr = 0
                 load_templates()
                 print(
-                    f"\n\nClick here: http://{ip_address}:{port} to open Mobile/Desktop View\n\n")
+                    f"\n\nClick here: {url} or {local_host_url} to open Mobile/Desktop View\n\n")
                 app.run(host="0.0.0.0", threaded=True, port=port)
             else:
                 print("Invalid path")
@@ -171,3 +190,5 @@ if __name__ == "__main__":
         print("Exited")
     except Exception as e:
         print("Exited")
+    if region:
+        ngrok.disconnect(url)
