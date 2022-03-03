@@ -5,4 +5,6 @@ itsdangerous==2.1.0
 Jinja2==3.0.3
 MarkupSafe==2.1.0
 natsort==8.1.0
+pyngrok==5.1.0
+PyYAML==6.0
 Werkzeug==2.0.3
