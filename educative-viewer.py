@@ -6,10 +6,12 @@ import natsort
 import socket
 from collections import defaultdict
 import random
+import sys
+import subprocess
+
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
-ip_address = ""
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -38,13 +40,14 @@ def index():
 
 
 def get_ip():
-    global ip_address, port
+    port = random.randint(1000, 9999)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     ip_address = s.getsockname()[0]
     while s.connect_ex((ip_address, port)) != 0:
         port = random.randint(1000, 9999)
     s.close()
+    return ip_address, port
 
 
 def check_code_present(topic):
@@ -103,10 +106,10 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", url=url)
     elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
     elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
@@ -114,7 +117,7 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", ip=ip_address, port=port)
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
@@ -124,10 +127,13 @@ def codes(codes):
 
 
 def clear():
-    if os.name == "nt":
-        os.system('cls')
-    else:
+    current_os = sys.platform
+    if current_os.startswith('darwin'):
         os.system('clear')
+    elif current_os.startswith('linux'):
+        os.system('clear')
+    elif current_os.startswith('win32') or current_os.startswith('cygwin'):
+        os.system('cls')
 
 
 def load_templates():
@@ -139,30 +145,49 @@ def load_templates():
     app.jinja_loader = my_loader
 
 
-if __name__ == "__main__":
-    try:
-        while True:
-            course_directory = ""
-            root_course_path = ""
-            clear()
-            print('''
+def initialization():
+    clear()
+    print(f'''
                             Educative viewer, made by Anilabha Datta
                             Project Link: https://github.com/anilabhadatta/educative-viewer
                             Read the documentation for more information about this project.
-
+                            
+                            -> For Cloudflared, enter the following command in a new terminal
+                                    cloudflared tunnel -url {ip_address}:{port} 
                             -> Leave Blank and press Enter to exit
             ''')
-            port = random.randint(1000, 9999)
-            get_ip()
+
+
+if __name__ == "__main__":
+    ip_address, port = get_ip()
+    initialization()
+    localhost_url = f"http://{ip_address}:{port}"
+    url = localhost_url
+    tunnel_url = input(
+        "Enter cloudflared tunnel url or Press Enter to skip: ")
+    if "trycloudflare.com" in tunnel_url:
+        url = tunnel_url
+    try:
+        while True:
+            initialization()
             course_directory = input("Enter Course Directory Path: ")
-            root_course_path = course_directory
+            if "trycloudflare.com" not in tunnel_url:
+                tunnel_url = input(
+                    "Enter cloudflared tunnel url or Press Enter to skip: ")
+                url = tunnel_url
             if course_directory == '':
                 break
             elif os.path.isdir(course_directory):
                 itr = 0
+                root_course_path = course_directory
                 load_templates()
                 print(
-                    f"\n\nClick here: http://{ip_address}:{port} to open Mobile/Desktop View\n\n")
+                    f'''
+
+                    To Open Mobile/Desktop View,
+                    Tunnel Url: {tunnel_url} ,Localhost Url: {localhost_url}
+                    
+                    ''')
                 app.run(host="0.0.0.0", threaded=True, port=port)
             else:
                 print("Invalid path")
@@ -170,4 +195,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exited")
     except Exception as e:
-        print("Exited")
+        print("Exited", e)
