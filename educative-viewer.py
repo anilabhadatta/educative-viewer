@@ -7,7 +7,6 @@ import socket
 from collections import defaultdict
 import random
 import sys
-import subprocess
 
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
@@ -79,7 +78,7 @@ def load_files(topic_directory):
     for root, _, files in os.walk(os.path.join(course_directory, topic_directory)):
         for file in files:
             file_path = os.path.join(root, file)
-            if os.path.isfile(file_path) and topic_directory not in file:
+            if os.path.isfile(file_path) and topic_directory not in file and ".DS_Store" not in file_path:
                 content = "\n"
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
@@ -106,10 +105,10 @@ def topics(topics):
         pass
     if request.method == "POST" and request.form.get("back") and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}", url=url)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}")
     elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
+        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
     elif request.method == 'POST' and request.form.get("home"):
         itr = 0
         return redirect("/")
@@ -117,7 +116,7 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}"
         path = path.replace("\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}", url=url)
+    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
@@ -152,8 +151,11 @@ def initialization():
                             Project Link: https://github.com/anilabhadatta/educative-viewer
                             Read the documentation for more information about this project.
                             
-                            -> For Cloudflared, enter the following command in a new terminal
-                                    cloudflared tunnel -url {ip_address}:{port} 
+                            -> For Cloudflare Tunneling, enter the following command in a new terminal
+                                    For random cloudflare tunnel url : cloudflared tunnel -url {ip_address}:{port}
+                                    For custom domain tunnel url : 
+                                                        Step 1: Modify Ip:Port in config.yml
+                                                        Step 2: Enter "cloudflared tunnel run" in terminal
                             -> Leave Blank and press Enter to exit
             ''')
 
@@ -161,20 +163,10 @@ def initialization():
 if __name__ == "__main__":
     ip_address, port = get_ip()
     initialization()
-    localhost_url = f"http://{ip_address}:{port}"
-    url = localhost_url
-    tunnel_url = input(
-        "Enter cloudflared tunnel url or Press Enter to skip: ")
-    if "trycloudflare.com" in tunnel_url:
-        url = tunnel_url
     try:
         while True:
             initialization()
             course_directory = input("Enter Course Directory Path: ")
-            if "trycloudflare.com" not in tunnel_url:
-                tunnel_url = input(
-                    "Enter cloudflared tunnel url or Press Enter to skip: ")
-                url = tunnel_url
             if course_directory == '':
                 break
             elif os.path.isdir(course_directory):
@@ -185,7 +177,8 @@ if __name__ == "__main__":
                     f'''
 
                     To Open Mobile/Desktop View,
-                    Tunnel Url: {tunnel_url} ,Localhost Url: {localhost_url}
+                    Tunnel Url: Use the url from cloudflare terminal window or the custom domain url
+                    Localhost Url: http://{ip_address}:{port}
                     
                     ''')
                 app.run(host="0.0.0.0", threaded=True, port=port)
