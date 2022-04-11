@@ -13,9 +13,11 @@
     <br>
     <h1 style="text-align: center;">Educative Viewer</h1>
     <h3 style="text-align: center;">{{folder}}</h3>
+    <br>
     <form action="/" method="POST">
         <div style="text-align: center;">
             <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
+            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refesh</button>
         </div>
         <br>
         {% for folder in folder_list %}
@@ -24,8 +26,8 @@
         <br>
         <div style="text-align: center;">
             <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
+            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refesh</button>
         </div>
-        <br>
     </form>
 </body>
 </html>

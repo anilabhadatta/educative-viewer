@@ -181,7 +181,7 @@ if __name__ == "__main__":
                     Localhost Url: http://{ip_address}:{port}
                     
                     ''')
-                app.run(host="0.0.0.0", threaded=True, port=port)
+                app.run(host="0.0.0.0", threaded=True, port=port, debug=False)
             else:
                 print("Invalid path")
                 input("Press enter to continue")
