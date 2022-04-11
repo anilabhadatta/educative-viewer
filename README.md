@@ -2,7 +2,7 @@
 
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper)
 ### Refer Step 4 if you are using Releases.
-### Refer cloudflared tunneling docs to tunnel local servers.
+### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated url / custom domain.
 ## To Run/Build this project:
 
 ### Step 1: Install the virtualenv package for python3 and create a virtual environment
