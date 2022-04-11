@@ -1,6 +1,6 @@
 # Educative Viewer
 
-## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper)
+## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 ### Refer Step 4 if you are using Releases.
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
