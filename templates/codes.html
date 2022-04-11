@@ -5,21 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asset/icon.ico') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>Codes</title>
 </head>
 <body>
-    <h1 style="text-align: center;">Codes</h1>
+    <h4 style="text-align: center;">Codes for: {{ file_names[-1] }}</h4>
     {% for content in file_contents%}
-    {% autoescape false %}
+    {% autoescape true %}
     <div style="border:1px solid black;">
-        <h4 style="margin-left:10px;">{{file_names[loop.index0]}}</h4>
-        <pre style="word-wrap: break-word; white-space: pre-wrap; margin-left:10px">
+        <button style="margin-left:10px;" class="btn btn-primary btn-file" onclick="copyFunction('{{loop.index0}}')">
+            <svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16"> <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z" fill="white"></path> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" fill="white"></path> <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" fill="white"></path></svg>
+        </button>
+        <h4 style="display: inline-block; padding: 5px">{{file_names[loop.index0]}}</h4>
+        <pre id="{{loop.index0}}" style="word-wrap: break-word; white-space: pre-wrap; margin-left:10px">
             {{content}}
         </pre>
     </div>
     {% endautoescape %}
     {% endfor %}
-    
+    <button type="button" class="btn btn-primary btn-floating btn-file" id="btn-back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+    </button>
+    <script src="{{ url_for('static', filename='js/scroll.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/copy.js')}}"></script>
 </body>
 </html>

@@ -91,7 +91,10 @@ def load_files(topic_directory):
     file_path_keys = natsort.natsorted(list(h_map.keys()))
     for file_path in file_path_keys:
         file_contents.append(h_map[file_path])
-        file_names.append(file_path)
+        file_names.append(
+            file_path[len(os.path.join(course_directory, topic_directory)):])
+    file_names.append(os.path.join(os.path.split(
+        course_directory)[-1], topic_directory))
     return file_contents, file_names
 
 

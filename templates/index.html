@@ -17,7 +17,7 @@
     <form action="/" method="POST">
         <div style="text-align: center;">
             <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
-            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refesh</button>
+            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refresh</button>
         </div>
         <br>
         {% for folder in folder_list %}
@@ -26,8 +26,14 @@
         <br>
         <div style="text-align: center;">
             <input name="back" class="btn btn-primary btn-file" type="submit"  value="Back">
-            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refesh</button>
+            <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refresh</button>
         </div>
     </form>
+    <button type="button" class="btn btn-primary btn-floating btn-file" id="btn-back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+    </button>
+    <script src="{{ url_for('static', filename='js/scroll.js')}}"></script>
 </body>
 </html>

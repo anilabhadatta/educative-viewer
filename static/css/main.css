@@ -20,10 +20,20 @@ pre {
   .image_desktop {
     display: none;
   }
-  
 }
 
 .image_mobile {
   display: none;
 }
 
+#btn-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
+
+textarea {
+  position: absolute;
+  left: -100%;
+}
