@@ -6,14 +6,14 @@
 
 ## To Run/Build this project:
 
-### Step 1: Install the virtualenv package for python3 and create a virtual environment
+### Step 1: Install the virtualenv package for python3 and create a virtual environment.
 
       
       pip3 install virtualenv 
       virtualenv env 
       
 
-### Step 2: Activate the environment
+### Step 2: Activate the environment.
 #### > (For Windows) 
       
       env\Scripts\activate
