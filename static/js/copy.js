@@ -5,4 +5,5 @@ function copyFunction(selector) {
     document.body.append(textArea);
     textArea.select();
     document.execCommand("copy");
+    textArea.remove();
 }
