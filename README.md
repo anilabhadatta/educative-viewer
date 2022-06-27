@@ -28,8 +28,9 @@
       python3 educative-viewer.py
       
 
-### Step 4: Enter the course folder path in terminal and server will automatically start
-#### > Enter local_server_ip:5000 in your desktop/mobile browser to open the viewer
+### Step 4: Execute the python script or the application downloaded from releases and Enter the course folder path in terminal and server will automatically start.
+#### > Enter local_server_ip:5000 in your desktop/mobile browser to open the viewer.
+      {local_server_ip : Refers to the local ip in your ethernet/wifi adapter set by your router. eg: 192.168.1.111}
 #### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
 ![image](https://i.imgur.com/sQQlJGI.jpg)
 
