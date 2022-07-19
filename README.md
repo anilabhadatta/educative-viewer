@@ -3,6 +3,7 @@
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 ### Refer Step 4 if you are using Releases.
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
+Update 19/07/2022: Increased zoom to 100% from 80% (For Educative Scraper v5.2 and above)
 
 ## To Run/Build this project:
 
