@@ -106,10 +106,10 @@ def topics(topics):
         itr = int(topic_folders.index(topics))
     except ValueError:
         pass
-    if request.method == "POST" and request.form.get("back") and itr > 0:
+    if request.method == "POST" and "back" in request.form and itr > 0:
         itr -= 1
         return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}")
-    elif request.method == "POST" and request.form.get("forward") and itr < len(topic_folders)-1:
+    elif request.method == "POST" and "next" in request.form and itr < len(topic_folders)-1:
         itr += 1
         return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
     elif request.method == 'POST' and request.form.get("home"):

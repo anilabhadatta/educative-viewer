@@ -15,9 +15,9 @@
     <br>
     <div style="text-align: center;">
         <form action="/topics" method="POST">
-            <input name="back" id="back" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Back">
-            <input name="home" id="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
-            <input name="forward" id="forward" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Forward">
+            <input name="back" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Back">
+            <input name="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
+            <input name="next" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Next">
             <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refresh</button>
             <br>
             <div style="margin-top: 5px">
@@ -33,6 +33,7 @@
     </div>
     <div>
     <br>
+    <form action="/topics" method="POST">
     <h4 style="text-align: center;">Current Topic: {{webpage}}</h4>
         <div class="image_mobile">
             {% include webpage %}
@@ -41,14 +42,13 @@
         <div class="image_desktop">
             {% include webpage %}
         </div>
+    </form>
         
     </div>
     <div style="text-align: center;">
         <br>
         <form action="/topics" method="POST">
-            <input name="back" id="back" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Back">
-            <input name="home" id="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
-            <input name="forward" id="forward" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Forward">
+            <input name="home" class="btn btn-primary btn-file" type="submit" style="text-align: center;" value="Home">
             <button type="button" style="display: inline-block;" class="btn btn-primary btn-file" onclick="window.location = window.location.href.split('#')[0];">Refresh</button>
             <br>
             <div style="margin-top: 5px">
