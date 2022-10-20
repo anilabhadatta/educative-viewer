@@ -4,9 +4,10 @@
 ### Refer Step 4 if you are using Releases.
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-Update 20/07/2022: Added support for HTML's inbuilt Next and Back button.\
-Update 19/07/2022: Increased zoom to 100% from 80%.\
-Use Educative Viewer v2.4+ for Educative Scraper v5.2+ , Use Educative Viewer v2.3 for HTML pages having screenshots.
+            Update 20/07/2022: Added support for HTML's inbuilt Next and Back button.
+            Repo Version : 6.5 || Release Version 5.7
+            Use Educative Viewer v2.4+ for Educative Scraper v5.2+
+            Use Educative Viewer v2.3 for HTML pages having screenshots.
 
 ## To Run/Build this project:
 
