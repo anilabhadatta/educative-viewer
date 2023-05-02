@@ -11,19 +11,12 @@ pre {
   color: white;
 }
 @media only screen and (min-width: 0px) and (max-width: 1100px) {
-  .image_mobile {
+  .image_desktop {
     display: block !important;
   }
-  .image_mobile > div > img {
+  .image_desktop > div > img {
     width: 100% !important;
   }
-  .image_desktop {
-    display: none;
-  }
-}
-
-.image_mobile {
-  display: none;
 }
 
 #btn-back-to-top {
@@ -36,4 +29,8 @@ pre {
 textarea {
   position: absolute;
   left: -100%;
+}
+
+* {
+  filter: none !important;
 }

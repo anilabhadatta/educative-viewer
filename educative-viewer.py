@@ -150,7 +150,7 @@ def load_templates():
 def initialization():
     clear()
     print(f'''
-                            Educative viewer, made by Anilabha Datta
+                            Educative Viewer, made by Anilabha Datta
                             Project Link: https://github.com/anilabhadatta/educative-viewer
                             Read the documentation for more information about this project.
                             

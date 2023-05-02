@@ -35,11 +35,7 @@
     <br>
     <form action="/topics" method="POST">
     <h4 style="text-align: center;">Current Topic: {{webpage}}</h4>
-        <div class="image_mobile">
-            {% include webpage %}
-            
-        </div>
-        <div class="image_desktop">
+        <div class="image_desktop" style="filter: none; !important">
             {% include webpage %}
         </div>
     </form>
