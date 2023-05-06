@@ -108,18 +108,18 @@ def topics(topics):
         pass
     if request.method == "POST" and "back" in request.form and itr > 0:
         itr -= 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html",  folder=f"{topic_folders[itr]}")
     elif request.method == "POST" and "next" in request.form and itr < len(topic_folders)-1:
         itr += 1
-        return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
-    elif request.method == 'POST' and request.form.get("home"):
+    elif request.method == 'POST' and "home" in request.form:
         itr = 0
         return redirect("/")
     elif request.method == 'POST' and request.form.get("code_filesystem"):
-        path = f"file:///{course_directory}/{topic_folders[itr]}"
-        path = path.replace("\\", "/")
+        path = f"file:///{course_directory}/{topic_folders[itr]}".replace(
+            "\\", "/")
         webbrowser.open(path)
-    return render_template("topics.html", code_present=check_code_present(topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+    rendered_html = render_template("topics.html", code_present=check_code_present(
+        topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+    return rendered_html
 
 
 @app.route("/code/<codes>", methods=['GET', 'POST'])
