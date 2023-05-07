@@ -6,12 +6,15 @@
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-            Repo Version : 2.7 || Release Version 2.5
+            Repo Version : 2.8 || Release Version 2.5
             Update 2.5 Added support for HTML's inbuilt Next and Back button.
             Update 2.6 : Fixed issue with HTML pages having blur in mobile view and moving across HTML.
             Update 2.7 : Fixed the Jittering issue and redesigned the UI.
+            Update 2.8 : Fixed some styling issues.
+
             Use Educative Viewer v2.5 or newer for Educative Scraper v6.5+
             Use Educative Viewer v2.3 for HTML pages having screenshots.
+            This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
 
