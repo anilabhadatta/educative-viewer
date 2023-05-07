@@ -116,6 +116,8 @@ def topics(topics):
         itr -= 1
     elif request.method == "POST" and "next" in request.form and itr < len(topic_folders)-1:
         itr += 1
+    elif request.method == 'POST' and "sidebar-topic" in request.form:
+        itr = int(request.form.get('sidebar-topic'))
     elif request.method == 'POST' and "home" in request.form:
         itr = 0
         return redirect("/")
@@ -127,7 +129,7 @@ def topics(topics):
     is_code_present = check_code_present(
         topic_folders[itr])
     rendered_html = render_template(
-        "topics.html", code_present=is_code_present, webpage=webpage, folder=f"{topic_folders[itr]}")
+        "topics.html", code_present=is_code_present, webpage=webpage, folder=f"{topic_folders[itr]}", folder_list=topic_folders, itr=itr)
     return rendered_html
 
 
