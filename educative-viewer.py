@@ -11,6 +11,12 @@ import sys
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
+app.jinja_env.variable_start_string = '[['
+app.jinja_env.variable_end_string = ']]'
+app.jinja_env.block_start_string = '[[='
+app.jinja_env.block_end_string = '=]]'
+app.jinja_env.comment_start_string = '{#'
+app.jinja_env.comment_end_string = '#}'
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -117,8 +123,11 @@ def topics(topics):
         path = f"file:///{course_directory}/{topic_folders[itr]}".replace(
             "\\", "/")
         webbrowser.open(path)
-    rendered_html = render_template("topics.html", code_present=check_code_present(
-        topic_folders[itr]), webpage=f"{topic_folders[itr]}/{topic_folders[itr]}.html", folder=f"{topic_folders[itr]}")
+    webpage = f"{topic_folders[itr]}/{topic_folders[itr]}.html"
+    is_code_present = check_code_present(
+        topic_folders[itr])
+    rendered_html = render_template(
+        "topics.html", code_present=is_code_present, webpage=webpage, folder=f"{topic_folders[itr]}")
     return rendered_html
 
 
