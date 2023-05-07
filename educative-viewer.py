@@ -11,10 +11,10 @@ import sys
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
-app.jinja_env.variable_start_string = '[['
-app.jinja_env.variable_end_string = ']]'
-app.jinja_env.block_start_string = '[[='
-app.jinja_env.block_end_string = '=]]'
+app.jinja_env.variable_start_string = '[([('
+app.jinja_env.variable_end_string = ')])]'
+app.jinja_env.block_start_string = '[([(='
+app.jinja_env.block_end_string = '=)])]'
 app.jinja_env.comment_start_string = '{#'
 app.jinja_env.comment_end_string = '#}'
 

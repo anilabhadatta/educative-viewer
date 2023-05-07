@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="icon" type="image/x-icon" href="[[ url_for('static', filename='asset/icon.ico') ]]">
-    <link rel="stylesheet" href="[[ url_for('static', filename='css/main.css') ]]">
+    <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
+    <link rel="stylesheet" href="[([( url_for('static', filename='css/main.css') )])]">
     <title>Educative Viewer</title>
 </head>
 <body>
     <br>
     <h1 style="text-align: center; color: white">Educative Viewer</h1>
-    <h3 style="text-align: center; color: white">[[folder]]</h3>
+    <h3 style="text-align: center; color: white">[([(folder)])]</h3>
     <br>
     <form action="/" method="POST">
         <button id="back-home" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
@@ -29,13 +29,13 @@
                 </g>
             </svg>
         </button>
-        [[=  for folder in folder_list =]]
-            <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="folder" value="[[folder]]">
-        [[= endfor =]]
+        [([(=  for folder in folder_list =)])]
+            <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="folder" value="[([(folder)])]">
+        [([(= endfor =)])]
     </form>
     <button type="button" class="btn btn-primary btn-floating btn-file" id="btn-back-to-top">
         <svg width="24px" height="24px" viewBox="0 0 0.72 0.72" id="up"  xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path id="primary" d="m0.591 0.279 -0.21 -0.21a0.03 0.03 0 0 0 -0.043 0l-0.21 0.21a0.03 0.03 0 0 0 0.043 0.043L0.33 0.162V0.63a0.03 0.03 0 0 0 0.06 0V0.162l0.159 0.159a0.03 0.03 0 0 0 0.043 0 0.03 0.03 0 0 0 0 -0.043Z"/></svg>
     </button>
-    <script src="[[ url_for('static', filename='js/scroll.js')]]"></script>
+    <script src="[([( url_for('static', filename='js/scroll.js'))])]"></script>
 </body>
 </html>
