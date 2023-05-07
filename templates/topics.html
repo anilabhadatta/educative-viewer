@@ -8,35 +8,27 @@
     <link rel="stylesheet" href="[[ url_for('static', filename='css/main.css') ]]">
     <link rel="icon" type="image/x-icon" href="[[ url_for('static', filename='asset/icon.ico') ]]">
     <title>Educative Viewer</title>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+        var buttons = document.querySelectorAll('.focus-button');
+        buttons.forEach(function(button) {
+        button.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        button.focus();
+        });
+});    
+    </script>
 </head>
 <body style="zoom: 100%">
     <form action="/topics" method="POST">
         [[=  include webpage =]]
-        <div class='sidebar' style=" position: fixed;
-                                    top: 0;
-                                    left: 0;
-                                    width: 270px;
-                                    height: 100%;
-                                    overflow-y: auto;">
-            <ul style="  list-style-type: none;
-                        margin: 0;
-                        padding: 0;">
+        <div class='sidebar'>
+            <ul id="sidebar-ul">
                 [[=  for folder in folder_list =]]
-                    <li style="margin-bottom: 10px;">
+                    <li id="sidebar-li">
                         [[= if [[loop.index0]] == [[itr]] =]]
-                        <button class="btn btn-primary btn-file" style="display: block;
-                                                                    text-decoration: none;
-                                                                    text-align: left;
-                                                                    color: #0dfd10 !important;
-                                                                    border: none !important;
-                                                                    white-space: normal;" type="submit" name="sidebar-topic" value="[[loop.index0]]">[[folder]]</button>
+                        <button id="sidebar-button-green" class="btn btn-primary btn-file focus-button" type="submit" name="sidebar-topic" value="[[loop.index0]]">[[folder]]</button>
                         [[= else =]]
-                        <button class="btn btn-primary btn-file" style="display: block;
-                                                                    text-decoration: none;
-                                                                    text-align: left;
-                                                                    color: rgb(193 193 198 / var(--tw-text-opacity)) !important;
-                                                                    border: none !important;
-                                                                    white-space: normal;" type="submit" name="sidebar-topic" value="[[loop.index0]]">[[folder]]</button>
+                        <button id="sidebar-button-normal" class="btn btn-primary btn-file" type="submit" name="sidebar-topic" value="[[loop.index0]]">[[folder]]</button>
                         [[= endif =]]
                     </li>
                 [[= endfor =]]

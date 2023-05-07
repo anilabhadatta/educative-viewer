@@ -13,6 +13,7 @@
             Update 2.8 : Fixed some styling issues.
             Update 2.9 : Fixed issue related to katex rendering. #5
             Update 3.0 : Added Sidebar for navigation between topics
+            Update 3.1 : Added auto scroll on sidebar
 
             Use Educative Viewer v2.5 or newer for Educative Scraper v6.5+
             Use Educative Viewer v2.3 for HTML pages having screenshots.

@@ -105,3 +105,42 @@ div[aria-labelledby*="simple-modal-title"] {
     width: 100% !important;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+div[class*="sidebar"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#sidebar-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#sidebar-li {
+  margin-bottom: 10px;
+}
+
+#sidebar-button-green {
+  display: block;
+  text-decoration: none;
+  text-align: left;
+  color: #0dfd10 !important;
+  border: none !important;
+  white-space: normal;
+}
+#sidebar-button-normal {
+  display: block;
+  text-decoration: none;
+  text-align: left;
+  color: rgb(193 193 198 / var(--tw-text-opacity)) !important;
+  border: none !important;
+  white-space: normal;
+}
