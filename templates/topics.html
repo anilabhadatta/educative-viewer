@@ -15,7 +15,18 @@
         button.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
         button.focus();
         });
-});    
+        var next_button = document.querySelectorAll("svg[class*='icon-right']");
+        var back_button = document.querySelectorAll("svg[class*='icon-left']");
+        if (next_button.length > 0){
+            next_button[0].parentNode.setAttribute('name', 'next');
+        }
+        if (back_button.length > 0){
+            back_button[0].parentNode.setAttribute('name', 'back');
+        }
+    });    
+    </script>
+    <script>
+        
     </script>
 </head>
 <body style="zoom: 100%">
