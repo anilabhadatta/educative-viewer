@@ -144,3 +144,7 @@ div[class*="sidebar"] {
   border: none !important;
   white-space: normal;
 }
+#main-content {
+  left: 150px !important;
+  position: relative;
+}
