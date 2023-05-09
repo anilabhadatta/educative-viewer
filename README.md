@@ -17,6 +17,7 @@
             Update 3.2 : Fixed Alignment issues.
             Update 3.3 : Fixed Pagination buttons.
             Update 3.4 : Changed delimiters of Jinja Template.
+            Update 3.5 : Speed things up by storing browser path & course directory into config file 
 
             Use Educative Viewer v2.5 or newer for Educative Scraper v6.5+
             Use Educative Viewer v2.3 for HTML pages having screenshots.

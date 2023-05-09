@@ -7,10 +7,43 @@ import socket
 from collections import defaultdict
 import random
 import sys
-
+import subprocess
+import threading
+import time
+import configparser
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
+
+
+
+# Define configuration file path
+config_file_path = "config.ini"
+
+# Create configuration file if it doesn't exist
+if not os.path.exists(config_file_path):
+    config = configparser.ConfigParser()
+    config.add_section("Paths")
+    config.set("Paths", "browser_path", "")
+    with open(config_file_path, "w") as f:
+        config.write(f)
+
+# Read configuration file
+config = configparser.ConfigParser()
+config.read(config_file_path)
+browser_path = config.get("Paths", "browser_path")
+
+# Prompt user to enter browser path if not already set
+if not browser_path:
+    browser_path = input("Enter browser path: ")
+    config.set("Paths", "browser_path", browser_path)
+
+# Write configuration file
+with open(config_file_path, "w") as f:
+    config.write(f)
+
+
+
 app.jinja_env.variable_start_string = '[([('
 app.jinja_env.variable_end_string = ')])]'
 app.jinja_env.block_start_string = '[([(='
@@ -44,6 +77,7 @@ def index():
     return render_template("index.html", folder_list=folders, folder=folder)
 
 
+
 def get_ip():
     port = random.randint(1000, 9999)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -53,7 +87,6 @@ def get_ip():
         port = random.randint(1000, 9999)
     s.close()
     return ip_address, port
-
 
 def check_code_present(topic):
     if len(os.listdir(os.path.join(course_directory, topic))) > 1:
@@ -174,13 +207,45 @@ def initialization():
             ''')
 
 
+
+
+def get_browser_path():
+    # Read configuration file
+    config = configparser.ConfigParser()
+    config.read(config_file_path)
+    browser_path = config.get("Paths", "browser_path")
+
+    # Prompt user to enter browser path if not already set
+    if not browser_path:
+        browser_path = input("Enter your browser path: ")
+        config.set("Paths", "browser_path", browser_path)
+        with open(config_file_path, "w") as f:
+            config.write(f)
+
+    return browser_path
+
+
+
 if __name__ == "__main__":
     ip_address, port = get_ip()
     initialization()
     try:
+        # Read configuration file
+        config = configparser.ConfigParser()
+        config.read(config_file_path)
+        if "Paths" not in config:
+            config["Paths"] = {}
+        course_directory = config.get("Paths", "course_directory", fallback="")
+
+        # Prompt user to enter course directory path if not already set
+        if not course_directory:
+            course_directory = input("Enter Course Directory Path: ")
+            config.set("Paths", "course_directory", course_directory)
+            with open(config_file_path, "w") as f:
+                config.write(f)
+
         while True:
             initialization()
-            course_directory = input("Enter Course Directory Path: ")
             if course_directory == '':
                 break
             elif os.path.isdir(course_directory):
@@ -193,12 +258,31 @@ if __name__ == "__main__":
                     To Open Mobile/Desktop View,
                     Tunnel Url: Use the url from cloudflare terminal window or the custom domain url
                     Localhost Url: http://{ip_address}:{port}
-                    
+
                     ''')
-                app.run(host="0.0.0.0", threaded=True, port=port, debug=False)
+                # start the Flask app in a separate thread
+                app_thread = threading.Thread(target=app.run, kwargs={"host": "0.0.0.0", "threaded": True, "port": port, "debug": False})
+                app_thread.start()
+
+                # wait for the server to start
+                time.sleep(2)
+
+                browser_path = get_browser_path()
+                url = f"http://{ip_address}:{port}/"
+
+                # open browser in a new process
+                subprocess.Popen([browser_path, url])
+
+                # wait for the server to stop
+                app_thread.join()
             else:
                 print("Invalid path")
                 input("Press enter to continue")
+
+            # Read configuration file again in case course_directory was updated
+            config.read(config_file_path)
+            course_directory = config.get("Paths", "course_directory", fallback="")
+
     except KeyboardInterrupt:
         print("Exited")
     except Exception as e:
