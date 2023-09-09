@@ -92,9 +92,7 @@ textarea {
 #sidebar-caret-collapse-2,
 div[aria-label*="Your Privacy"],
 div[class*="ed-grid"] > nav,
-div[id*="view-collection-article-content-root"]
-  > :not(#handleArticleScroll)
-  > *,
+div[id*='view-collection-article-content-root'] > :not(#handleArticleScroll):not(:last-child), div[id*='view-collection-article-content-root']:not(:has(#handleArticleScroll)) > :not(:last-child),
 div[aria-labelledby*="simple-modal-title"] {
   display: none !important;
 }
