@@ -134,6 +134,15 @@ div[class*="sidebar"] {
   border: none !important;
   white-space: normal;
 }
+#sidebar-button-white {
+  display: block;
+  text-decoration: none;
+  text-align: left;
+  color: white !important;
+  border: none !important;
+  white-space: normal;
+  font-weight: bolder;
+}
 #sidebar-button-normal {
   display: block;
   text-decoration: none;
