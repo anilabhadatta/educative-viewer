@@ -2,8 +2,6 @@
 
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 
-### Run the executable downloaded from releases and Enter the course folder path in terminal and server will automatically start.
-
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
             Repo Version : 3.4 || Release Version 2.5(deprecated)
