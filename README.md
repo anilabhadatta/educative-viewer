@@ -2,11 +2,11 @@
 
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 
-### Refer Step 5 if you are using Releases.
+### Run the executable downloaded from releases and Enter the course folder path in terminal and server will automatically start.
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-            Repo Version : 3.4 || Release Version 2.5
+            Repo Version : 3.4 || Release Version 2.5(deprecated)
             Update 2.5 Added support for HTML's inbuilt Next and Back button.
             Update 2.6 : Fixed issue with HTML pages having blur in mobile view and moving across HTML.
             Update 2.7 : Fixed the Jittering issue and redesigned the UI.
@@ -18,8 +18,6 @@
             Update 3.3 : Fixed Pagination buttons.
             Update 3.4 : Changed delimiters of Jinja Template.
 
-            Use Educative Viewer v2.5 or newer for Educative Scraper v6.5+
-            Use Educative Viewer v2.3 for HTML pages having screenshots.
             This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
@@ -52,7 +50,7 @@
       pip3 install -r requirements.txt
       python3 educative-viewer.py
 
-### Step 5: Execute the python script or the executable downloaded from releases and Enter the course folder path in terminal and server will automatically start.
+### Step 5: Enter the course folder path in terminal and server will automatically start.
 
 #### > Enter local_server_ip:5000 in your desktop/mobile browser to open the viewer.
 
