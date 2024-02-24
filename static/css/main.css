@@ -87,6 +87,7 @@ textarea {
 }
 
 * {
+  max-width: 100%;
   filter: none !important;
 }
 #sidebar-caret-collapse-2,
@@ -138,11 +139,11 @@ div[class*="sidebar"] {
   display: block;
   text-decoration: none;
   text-align: left;
-  color: rgb(193 193 198 / var(--tw-text-opacity)) !important;
+  /* color: rgb(193 193 198 / var(--tw-text-opacity)) !important; */
   border: none !important;
   white-space: normal;
 }
 #main-content {
-  left: 150px !important;
+  /* left: 150px !important; */
   position: relative;
 }
