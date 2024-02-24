@@ -7,7 +7,7 @@ import socket
 from collections import defaultdict
 import random
 import sys
-
+import json
 
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
@@ -32,6 +32,9 @@ def index():
         elif folder+".html" not in os.listdir(os.path.join(course_directory, folder)):
             course_directory = os.path.join(course_directory, folder)
             folders = natsort.natsorted(load_folder(course_directory))
+            load_toc_if_exist()
+            if toc:
+                return render_index_with_toc(folder=folder)
             return render_template("index.html", folder_list=folders, folder=folder)
     elif request.method == "POST" and len(root_course_path) < len(course_directory):
         course_directory = os.path.sep.join(
@@ -39,10 +42,38 @@ def index():
         folders = natsort.natsorted(load_folder(course_directory))
         folder = os.path.split(course_directory)[-1]
         return render_template("index.html", folder_list=folders, folder=folder)
+    
     folders = natsort.natsorted(load_folder(course_directory))
     folder = os.path.split(course_directory)[-1]
+    load_toc_if_exist()
+    if toc:
+        return render_index_with_toc(folder=folder)
     return render_template("index.html", folder_list=folders, folder=folder)
 
+def load_toc_if_exist():
+    global toc
+    toc = None
+    if course_directory:
+        tocpath = os.path.join(course_directory, "__toc__.json")
+        if os.path.exists(tocpath):
+            with open(tocpath) as tocfile:
+                toc = json.load(tocfile)
+
+def build_toc_render_items():
+    toc_items = []
+    for item in toc["toc"]:
+        if type(item) is dict: # category
+            toc_items.append({"title": item["category"], "is_category": True})
+            for topic in item["topics"]:
+                toc_items.append({"title": topic[1], "is_category": False})
+        else: # assessments, projects, cloud labs..
+            toc_items.append({"title": item[1], "is_category": False})
+    return toc_items
+
+def render_index_with_toc(folder: str):
+    toc_items = build_toc_render_items()
+
+    return render_template("index_toc.html", toc_items=toc_items, folder=folder)
 
 def get_ip():
     port = random.randint(1000, 9999)
@@ -103,10 +134,38 @@ def load_files(topic_directory):
         course_directory)[-1], topic_directory))
     return file_contents, file_names
 
+def topics_toc(topics):
+    global itr
+    toc_items = build_toc_render_items()
+    try:
+        itr = next(i for i, toc_item in enumerate(toc_items) if toc_item['title'] == topics)
+    except StopIteration:
+        pass
+    if request.method == "POST" and "back" in request.form and itr > 0:
+        itr -= 1
+    elif request.method == "POST" and "next" in request.form and itr < len(toc_items)-1:
+        itr += 1
+    elif request.method == 'POST' and "sidebar-topic" in request.form:
+        itr = int(request.form.get('sidebar-topic'))
+    elif request.method == 'POST' and "home" in request.form:
+        itr = 0
+        return redirect("/")
+    elif request.method == 'POST' and request.form.get("code_filesystem"):
+        path = f"file:///{course_directory}/{toc_items[itr]['title']}".replace(
+            "\\", "/")
+        webbrowser.open(path)
+    webpage = f"{toc_items[itr]['title']}/{toc_items[itr]['title']}.html"
+    is_code_present = check_code_present(
+        toc_items[itr]['title'])
+    rendered_html = render_template(
+        "topics_toc.html", code_present=is_code_present, webpage=webpage, folder=f"{toc_items[itr]['title']}", toc_items=toc_items, itr=itr)
+    return rendered_html
 
 @app.route("/<topics>", methods=['GET', 'POST'])
 def topics(topics):
     global itr
+    if toc:
+        return topics_toc(topics)
     topic_folders = natsort.natsorted(load_topics(course_directory))
     try:
         itr = int(topic_folders.index(topics))
