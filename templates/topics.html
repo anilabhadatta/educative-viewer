@@ -26,7 +26,15 @@
     });    
     </script>
     <script>
-        
+        function openNav() {
+            const sidebar = document.getElementById('sidebar-ul');
+        const sidebarParent = document.querySelector('.sidebar');
+      const isOpen = sidebarParent.style.left === '0px';
+
+      // Toggle the sidebar state
+      sidebarParent.style.left = isOpen ? '-300px' : '0px';
+      sidebarParent.style.overflowY = isOpen ? 'hidden' : 'auto';
+    }
     </script>
 </head>
 <body style="zoom: 100%">
@@ -92,6 +100,7 @@
                     </g>
                 </svg>
             </button>
+            <button id="open-btn" class="btn btn-primary btn-floating btn-file" onclick="openNav()" type="button">☰</button>
         <script src="[([( url_for('static', filename='js/scroll.js'))])]"></script>
     </div>
 </body>
