@@ -141,8 +141,9 @@ def topics_toc(topics):
         itr = next(i for i, toc_item in enumerate(toc_items) if toc_item['title'] == topics)
     except StopIteration:
         pass
+    print(f"Old Itr: {itr}")
     if request.method == "POST" and "back" in request.form and itr > 0:
-        if itr-1>=0 and toc_items[itr-1]['is_category']:
+        if itr-1>0 and toc_items[itr-1]['is_category']:
             itr -= 1
         itr -= 1
     elif request.method == "POST" and "next" in request.form and itr < len(toc_items)-1:
@@ -159,7 +160,7 @@ def topics_toc(topics):
             "\\", "/")
         webbrowser.open(path)
     webpage = f"{toc_items[itr]['title']}/{toc_items[itr]['title']}.html"
-    print(webpage)
+    print(f"New Itr: {itr} Webpage {webpage}")
     is_code_present = check_code_present(
         toc_items[itr]['title'])
     rendered_html = render_template(
@@ -259,7 +260,7 @@ if __name__ == "__main__":
                     Localhost Url: http://{ip_address}:{port}
                     
                     ''')
-                app.run(host="0.0.0.0", threaded=True, port=port, debug=False)
+                app.run(host="0.0.0.0", threaded=True, port=5022, debug=False)
             else:
                 print("Invalid path")
                 input("Press enter to continue")
