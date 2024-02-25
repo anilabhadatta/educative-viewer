@@ -143,7 +143,7 @@ def topics_toc(topics):
         pass
     print(f"Old Itr: {itr}")
     if request.method == "POST" and "back" in request.form and itr > 0:
-        if itr-1>0 and toc_items[itr-1]['is_category']:
+        if itr-1>1 and toc_items[itr-1]['is_category']:
             itr -= 1
         itr -= 1
     elif request.method == "POST" and "next" in request.form and itr < len(toc_items)-1:
