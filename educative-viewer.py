@@ -142,8 +142,12 @@ def topics_toc(topics):
     except StopIteration:
         pass
     if request.method == "POST" and "back" in request.form and itr > 0:
+        if itr-1>=0 and toc_items[itr-1]['is_category']:
+            itr -= 1
         itr -= 1
     elif request.method == "POST" and "next" in request.form and itr < len(toc_items)-1:
+        if itr+1<len(toc_items) and toc_items[itr+1]['is_category']:
+            itr += 1
         itr += 1
     elif request.method == 'POST' and "sidebar-topic" in request.form:
         itr = int(request.form.get('sidebar-topic'))
@@ -155,6 +159,7 @@ def topics_toc(topics):
             "\\", "/")
         webbrowser.open(path)
     webpage = f"{toc_items[itr]['title']}/{toc_items[itr]['title']}.html"
+    print(webpage)
     is_code_present = check_code_present(
         toc_items[itr]['title'])
     rendered_html = render_template(
