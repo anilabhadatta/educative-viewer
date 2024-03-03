@@ -2,9 +2,9 @@
 
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 
-### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
+### Refer [cloudflared tunneling docs](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/get-started/create-local-tunnel/) to tunnel local servers via cloudflared generated urls or custom domains.
 
-            Repo Version : 3.4 || Release Version 2.5(deprecated)
+            Repo Version : 3.5 || Release Version 2.5(deprecated)
             Update 2.5 Added support for HTML's inbuilt Next and Back button.
             Update 2.6 : Fixed issue with HTML pages having blur in mobile view and moving across HTML.
             Update 2.7 : Fixed the Jittering issue and redesigned the UI.
@@ -15,6 +15,7 @@
             Update 3.2 : Fixed Alignment issues.
             Update 3.3 : Fixed Pagination buttons.
             Update 3.4 : Changed delimiters of Jinja Template.
+            Update 3.5 : Fixed multiple issues and also added TOC
 
             This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
