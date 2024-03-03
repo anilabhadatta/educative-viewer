@@ -25,7 +25,7 @@
 
       Git
       Python 3.9+
-      OS: Win/Mac(Intel)/Linux(ARM/AMD)
+      OS: Win(x86/x64) - Mac(ARM64/x64) - Linux(ARM64/x64)
 
 ### Step 1: Clone the repository and create a terminal inside the cloned directory and run the following commands.
 
