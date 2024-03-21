@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
@@ -5,7 +6,7 @@ from .models import User
 from . import db
 
 auth = Blueprint('auth', __name__)
-
+authcode = os.getenv('authToken', '')
 
 @auth.route('/edu-viewer/login')
 def login():
@@ -43,13 +44,17 @@ def signup_post():
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
-
+    refer_code = request.form.get('refercode')
+    
     # if this returns a user, then the email already exists in database
     user = User.query.filter_by(email=email).first(
     ) or User.query.filter_by(username=username).first()
 
     if user:  # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email or Username address already exists')
+        return redirect(url_for('auth.signup'))
+    if authcode != refer_code:
+        flash('Invalid Refer Code')
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
