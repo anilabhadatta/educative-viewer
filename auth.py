@@ -7,12 +7,12 @@ from . import db
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login')
+@auth.route('/edu-viewer/login')
 def login():
     return render_template('login.html')
 
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/edu-viewer/login', methods=['POST'])
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -32,12 +32,12 @@ def login_post():
     return redirect(url_for('main.courses'))
 
 
-@auth.route('/signup')
+@auth.route('/edu-viewer/signup')
 def signup():
     return render_template('signup.html')
 
 
-@auth.route('/signup', methods=['POST'])
+@auth.route('/edu-viewer/signup', methods=['POST'])
 def signup_post():
 
     email = request.form.get('email')
@@ -62,7 +62,7 @@ def signup_post():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/logout')
+@auth.route('/edu-viewer/logout')
 @login_required
 def logout():
     logout_user()

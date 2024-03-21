@@ -8,13 +8,67 @@
     <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
     <link rel="stylesheet" href="[([( url_for('static', filename='css/main.css') )])]">
     <title>Educative Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="/static/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body::-webkit-scrollbar {
+            display: none;
+            }
+
+            /* Hide scrollbar for IE, Edge and Firefox */
+            body {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+            }
+        .ui-datepicker-calendar {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 <body>
+    <div class="hero-head" >
+        <nav class="navbar" style="background: transparent;">
+            <div class="container">
+
+                <div id="navbarMenuHeroA" class="navbar-menu">
+                    <!-- <h2 class="has-text-white navbar-item is-centered navbar-end">Educative Viewer</h2> -->
+                    <div class="navbar-end">
+                        <a href="[([( url_for('main.index') )])]" class="navbar-item has-text-white">
+                            Home
+                        </a>
+                        [([(= if current_user.is_authenticated =)])]
+                        <a href="[([( url_for('main.courses') )])]" class="navbar-item has-text-white">
+                            Courses
+                        </a>
+                        [([(= endif =)])]
+                        [([(= if not current_user.is_authenticated =)])]
+                        <a href="[([( url_for('auth.login') )])]" class="navbar-item has-text-white">
+                            Login
+                        </a>
+                        <a href="[([( url_for('auth.signup') )])]" class="navbar-item has-text-white">
+                            Sign Up
+                        </a>
+                        [([(= endif =)])]
+                        [([(= if current_user.is_authenticated =)])]
+                        <a href="[([( url_for('auth.logout') )])]" class="navbar-item has-text-white">
+                            Logout
+                        </a>
+                        [([(= endif =)])]
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
     <br>
     <h1 style="text-align: center; color: white">Educative Viewer</h1>
     <h3 style="text-align: center; color: white">[([(folder)])]</h3>
     <br>
-    <form action="/courses" method="POST">
+    <form action="/edu-viewer/courses" method="POST">
         <button id="back-home" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
             <svg width="24px" height="24px" viewBox="0 0 30.72 30.72" class="icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                 <path  d="M6.72 14.4h19.2a0.96 0.96 0 1 1 0 1.92H6.72a0.96 0.96 0 0 1 0 -1.92z"/>
@@ -33,7 +87,7 @@
             [([(= if toc_item.is_category =)])]
                 <input class="btn btn-primary active" style="display: block; width: 100%; font-weight: bolder; cursor: auto;" type="button" name="folder" value="[([(toc_item['title'])])]">
             [([(= else =)])]
-                <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="folder" value="[([(toc_item['title'])])]">
+                <input class="btn btn-primary btn-file" style="display: block; width: 100%; color: [([(toc_item['color'])])] !important;" type="submit" name="folder" value="[([(toc_item['title'])])]">
             [([(= endif =)])]
             
         [([(= endfor =)])]

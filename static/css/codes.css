@@ -1,0 +1,11 @@
+body,
+.btn.btn-primary.btn-file {
+  background-color: rgba(21, 21, 30, 1);
+}
+
+*,
+:not(body),
+:not(.btn.btn-primary.btn-file) {
+  color: rgb(193 193 198 / var(--tw-text-opacity)) !important;
+  --tw-text-opacity: 1;
+}
