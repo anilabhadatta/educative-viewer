@@ -31,7 +31,7 @@ def load_files(topic_dir, course_dir):
     return file_contents, file_names
 
 
-def check_code_present(topic, course_dir):
+def check_code_present(course_dir, topic):
     if len(os.listdir(os.path.join(course_dir, topic))) > 1:
         return True
     return False
