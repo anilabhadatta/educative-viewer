@@ -226,7 +226,7 @@
     </script>
 </head>
 
-<body style="background-color: #2c2c2c;">
+<body style="background-color: #2c2c2c; overflow-y: hidden;">
     <div class="editor-container">
         <div class="explorer" id="explorer">
             <ul class="file-list" id="file-list"></ul>
@@ -279,7 +279,7 @@
                     }
                 }
                 var extFile = fileName.split('.').pop();
-                var ext = switchCaseLanguage(fs3);
+                var ext = switchCaseLanguage(extFile);
                 if (ext !== 'plaintext') {
                     return ext;
                 }
