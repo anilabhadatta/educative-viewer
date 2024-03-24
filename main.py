@@ -241,7 +241,7 @@ def list_files():
     return jsonify(files)
 
 # Endpoint to get file content
-@main.route('/edu-viewer/courses/file-content/<filename>')
+@main.route('/edu-viewer/courses/file-content/<path:filename>')
 def file_content(filename):
     encoded_path = request.args.get('encoded_path')
     directory_path = base64.b64decode(encoded_path.encode()).decode()

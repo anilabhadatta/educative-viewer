@@ -249,7 +249,7 @@
                         const listItem = document.createElement('li');
                         listItem.textContent = item;
                         listItem.addEventListener('click', () => {
-                            fetch(`/edu-viewer/courses/file-content/${encodeURIComponent(item)}?encoded_path=[([( encoded_path )])]`)
+                            fetch(`/edu-viewer/courses/file-content/${item}?encoded_path=[([( encoded_path )])]`)
                                 .then(response => response.text())
                                 .then(content => {
                                     editor.setValue(content);
