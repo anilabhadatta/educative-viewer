@@ -1,6 +1,7 @@
+import base64
 import json
 import webbrowser
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, jsonify, render_template, request, redirect, send_file, session, url_for, flash
 from flask_login import login_required, current_user
 import natsort
 
@@ -39,7 +40,6 @@ def courses():
     if request.method == "POST" and request.form.get("folder"):
         folder = request.form.get("folder")
         course_dir = os.path.join(course_dir, folder)
-        print(course_dir, current_user.username)
         if folder+".html" not in os.listdir(course_dir):
             current_user_details = UserDetails(
                 username=current_user.username, last_visited_course=course_dir, last_visited_topic=last_visited_topic, last_visited_index=0)
@@ -128,7 +128,6 @@ def build_toc_render_items(toc, highlight_idx=0):
 @main.route("/edu-viewer/courses/<topics>", methods=['GET', 'POST'])
 @login_required
 def topics(topics):
-    print(topics)
     current_user_details = UserDetails.query.filter_by(
             username=current_user.username).first()
     course_dir = current_user_details.last_visited_course
@@ -179,7 +178,6 @@ def topics_toc(topics, course_dir, toc, itr):
         itr = next(i for i, toc_item in enumerate(toc_items) if toc_item['title'] == topics)
     except StopIteration:
         pass
-    print(f"Old Itr: {itr}")
     if request.method == "POST" and "back" in request.form and itr > 0:
         if toc_items[itr-1]['is_category']:
             if itr-1 != 0:
@@ -209,7 +207,6 @@ def topics_toc(topics, course_dir, toc, itr):
     db.session.commit()
     template_folder = "/".join(course_dir[len(root_course_dir)+1:].split(os.path.sep))
     webpage = f"{template_folder}/{toc_items[itr]['title']}/{toc_items[itr]['title']}.html"
-    print(f"New Itr: {itr} Webpage {webpage}")
     is_code_present = check_code_present(course_dir, toc_items[itr]['title'])
     rendered_html = render_template(
         "topics_toc.html", code_present=is_code_present, webpage=webpage, folder=f"{toc_items[itr]['title']}", toc_items=toc_items, itr=itr)
@@ -221,9 +218,35 @@ def codes(codes):
     current_user_details = UserDetails.query.filter_by(
             username=current_user.username).first()
     course_dir = current_user_details.last_visited_course
-    file_contents, file_names = load_files(codes, course_dir)
-    return render_template("codes.html", file_contents=file_contents, file_names=file_names)
+    directory_path = os.path.join(course_dir, codes)
+    encoded_path = base64.b64encode(directory_path.encode()).decode()
+    return render_template("monaco-editor.html", encoded_path=encoded_path)
 
+
+def list_files_recursive(directory):
+    files = []
+    for root, _, filenames in os.walk(directory):
+        for filename in filenames:
+            topic_folder = os.path.split(root)[-1]
+            if filename != f"{topic_folder}.html":
+                files.append(os.path.relpath(os.path.join(root, filename), directory))
+    return files
+
+# Endpoint to list files in a directory
+@main.route('/edu-viewer/courses/list-files')
+def list_files():
+    encoded_path = request.args.get('encoded_path')
+    directory_path = base64.b64decode(encoded_path.encode()).decode()
+    files = list_files_recursive(directory_path)
+    return jsonify(files)
+
+# Endpoint to get file content
+@main.route('/edu-viewer/courses/file-content/<filename>')
+def file_content(filename):
+    encoded_path = request.args.get('encoded_path')
+    directory_path = base64.b64decode(encoded_path.encode()).decode()
+    file_path = os.path.join(directory_path, filename)
+    return send_file(file_path)
 
 @main.errorhandler(404)
 def page_not_found(e):

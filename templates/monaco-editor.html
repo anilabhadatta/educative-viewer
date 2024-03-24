@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monaco Editor with Explorer</title>
+    <!-- Load Monaco Editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css">
+    <style>
+        .editor-container {
+            display: flex;
+            height: 100vh;
+        }
+        .explorer {
+            width: 250px;
+            background-color: #1e1e1e; /* Dark background */
+            color: #fff; /* Light text */
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .file-list li:hover {
+            background-color: #2c2c2c; /* Darker background on hover */
+        }
+        .monaco-editor {
+            flex: 1;
+            height: 100%;
+            background-color: #1e1e1e; /* Dark background */
+            color: #fff; /* Light text */
+        }
+    </style>
+    <script>
+        const languageMap = {
+    'js': 'javascript',
+    'html': 'html',
+    'css': 'css',
+    'py': 'python',
+    'java': 'java',
+    'rb': 'ruby',
+    'php': 'php',
+    'cpp': 'cpp',
+    'c': 'c',
+    'cs': 'csharp',
+    'swift': 'swift',
+    'go': 'go',
+    'rust': 'rust',
+    'ts': 'typescript',
+    'jsx': 'jsx',
+    'tsx': 'tsx',
+    'json': 'json',
+    'yaml': 'yaml',
+    'xml': 'xml',
+    'sql': 'sql',
+    'asm': 'assembly',
+    'sh': 'shell',
+    'perl': 'perl',
+    'r': 'r',
+    'lua': 'lua',
+    'dart': 'dart',
+    'scala': 'scala',
+    'swift': 'swift',
+    'matlab': 'matlab',
+    'powershell': 'powershell',
+    'sass': 'sass',
+    'scss': 'scss',
+    'less': 'less',
+    'coffee': 'coffeescript',
+    'hbs': 'handlebars',
+    'ejs': 'ejs',
+    'md': 'markdown',
+    'tex': 'latex',
+    'bat': 'batchfile',
+    'csv': 'csv',
+    'graphql': 'graphql',
+    'perl': 'perl',
+    'swift': 'swift',
+    'vb': 'vb',
+    'vbs': 'vbscript',
+    'yml': 'yaml',
+    'ini': 'ini',
+    'toml': 'toml',
+    'diff': 'diff',
+    'patch': 'patch',
+    'nginx': 'nginx',
+    'dockerfile': 'dockerfile',
+    'racket': 'racket',
+    'elm': 'elm',
+    'erl': 'erlang',
+    'ex': 'elixir',
+    'lua': 'lua',
+    'swift': 'swift',
+    'tsx': 'tsx',
+    'jsx': 'jsx',
+    'vue': 'vue',
+    'yaml': 'yaml',
+    'toml': 'toml',
+    'graphql': 'graphql',
+    'dockerfile': 'dockerfile',
+    'makefile': 'makefile',
+    'cmake': 'cmake',
+    'perl': 'perl',
+    'raku': 'raku',
+    'racket': 'racket',
+    'elm': 'elm',
+    'erl': 'erlang',
+    'f': 'fortran',
+    'f90': 'fortran',
+    'f95': 'fortran',
+    'for': 'fortran',
+    'f03': 'fortran',
+    'f08': 'fortran',
+    'hs': 'haskell',
+    'ts': 'typescript',
+    'kt': 'kotlin',
+    'kts': 'kotlin',
+    'asm': 'assembly',
+    'adoc': 'asciidoc',
+    'sh': 'shell',
+    'csh': 'shell',
+    'bash': 'shell',
+    'zsh': 'shell',
+    'fish': 'shell',
+    'r': 'r',
+    'rmd': 'rmarkdown',
+    'ipynb': 'jupyter-notebook',
+    'pl': 'perl',
+    'sql': 'sql',
+    'groovy': 'groovy',
+    'jsp': 'jsp',
+    'ejs': 'ejs',
+    'd': 'd',
+    'nim': 'nim',
+    'scss': 'scss',
+    'sass': 'sass',
+    'styl': 'stylus',
+    'go': 'go',
+    'lua': 'lua',
+    'moon': 'moonscript',
+    'nix': 'nix',
+    'mm': 'objectivec',
+    'tcl': 'tcl',
+    'r': 'r',
+    'html': 'html',
+    'xml': 'xml',
+    'sql': 'sql',
+    'graphql': 'graphql',
+    'json': 'json',
+    'yml': 'yaml',
+    'toml': 'toml',
+    'ini': 'ini',
+    'sh': 'shell',
+    'bat': 'batchfile',
+    'fish': 'fish',
+    'ps1': 'powershell',
+    'gradle': 'gradle',
+    'groovy': 'groovy',
+    'properties': 'properties',
+    'md': 'markdown',
+    'rst': 'restructuredtext',
+    'as': 'actionscript',
+    'mxml': 'mxml',
+    'pl': 'perl',
+    'pm': 'perl',
+    't': 'perl',
+    'pod': 'perl',
+    'cgi': 'perl',
+    'js': 'javascript',
+    'ts': 'typescript',
+    'jsx': 'jsx',
+    'tsx': 'tsx',
+    'sh': 'shell',
+    'c': 'c',
+    'h': 'c',
+    'm': 'objectivec',
+    'cs': 'csharp',
+    'cpp': 'cpp',
+    'hpp': 'cpp',
+    'cc': 'cpp',
+    'hh': 'cpp',
+    'hxx': 'cpp',
+    'cxx': 'cpp',
+    'rs': 'rust',
+    'swift': 'swift',
+    'py': 'python',
+    'java': 'java',
+    'kt': 'kotlin',
+    'rb': 'ruby',
+    'coffee': 'coffeescript',
+    'go': 'go',
+    'dart': 'dart',
+    'elm': 'elm',
+    'php': 'php',
+    'sql': 'sql',
+    'yaml': 'yaml',
+    'xml': 'xml',
+    'hbs': 'handlebars',
+    'ejs': 'ejs',
+    'json': 'json',
+    'csv': 'csv',
+    'graphql': 'graphql',
+    'md': 'markdown',
+    'tex': 'latex',
+    'diff': 'diff',
+    'patch': 'patch',
+    'nginx': 'nginx',
+    'dockerfile': 'dockerfile',
+};
+    </script>
+</head>
+<body style="background-color: #2c2c2c;">
+    <div class="editor-container">
+        <div class="explorer" id="explorer">
+            <ul class="file-list" id="file-list"></ul>
+        </div>
+        <div id="editor" class="monaco-editor"></div>
+
+    </div>
+    <!-- Load Monaco Editor scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' }});
+
+        require(['vs/editor/editor.main'], function() {
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: 'Welcome to Monaco Editor!',
+                language: 'plaintext',
+                theme: 'vs-dark'
+            });
+
+            const explorer = document.getElementById('explorer');
+            const fileList = document.getElementById('file-list');
+
+            // Fetch folder structure from the server
+            fetch('/edu-viewer/courses/list-files?encoded_path=[([( encoded_path )])]')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear previous contents
+                    fileList.innerHTML = '';
+
+                    // Populate file explorer
+                    data.forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = item;
+                        listItem.addEventListener('click', () => {
+                            fetch(`/edu-viewer/courses/file-content/${encodeURIComponent(item)}?encoded_path=[([( encoded_path )])]`)
+                                .then(response => response.text())
+                                .then(content => {
+                                    editor.setValue(content);
+                                    monaco.editor.setModelLanguage(editor.getModel(), getLanguage(item));
+                                })
+                                .catch(error => console.error('Error fetching file content:', error));
+                        });
+                        fileList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching folder structure:', error));
+
+            function getLanguage(fileName) {
+                const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
+                const fs1 = fileNameWithoutExtension.split(' ');
+                const fs2 = fileNameWithoutExtension.split('-');
+                const fs3 = fileName.split('.');
+                for (let i = 0; i < fs1.length; i++) {
+                    var fs1word = switchCaseLanguage(fs1[i]);
+                    if (fs1word !== 'plaintext') {
+                        return fs1word;
+                    }
+                }
+                for (let i = 0; i < fs2.length; i++) {
+                    var fs2word = switchCaseLanguage(fs2[i]);
+                    if (fs2word !== 'plaintext') {
+                        return fs2word;
+                    }
+                }
+                for (let i = 0; i < fs3.length; i++) {
+                    var fs3word = switchCaseLanguage(fs3[i]);
+                    if (fs3word !== 'plaintext') {
+                        return fs3word;
+                    }
+                }
+                return 'plaintext';
+            }
+
+            function switchCaseLanguage(word){
+                console.log(languageMap[word]);
+                if (languageMap[word] !== undefined) {
+                    return languageMap[word];
+                }
+                return 'plaintext';
+        }
+        });
+    </script>
+</body>
+</html>
