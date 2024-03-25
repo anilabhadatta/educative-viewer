@@ -1,4 +1,5 @@
 import base64
+import glob
 import json
 import webbrowser
 from flask import Blueprint, jsonify, render_template, request, redirect, send_file, session, url_for, flash
@@ -223,28 +224,49 @@ def codes(codes):
     return render_template("monaco-editor.html", encoded_path=encoded_path)
 
 
-def list_files_recursive(directory):
-    files = []
-    for root, _, filenames in os.walk(directory):
-        for filename in filenames:
-            topic_folder = os.path.split(root)[-1]
-            if filename != f"{topic_folder}.html":
-                files.append(os.path.relpath(os.path.join(root, filename), directory))
-    return files
+def build_folder_structure(directory, root):
+    structure = []
+
+    for item in glob.glob(os.path.join(directory, '*')):
+        if os.path.isdir(item):
+            folder_name = os.path.basename(item)
+            node = {"text": folder_name, "nodes": []}
+
+            # Recursively build structure for subfolder
+            substructure = build_folder_structure(item, root)
+            if substructure:
+                node["nodes"].extend(substructure)
+
+            structure.append(node)
+        elif os.path.isfile(item):
+            filename = os.path.basename(item)
+            if filename != f"{os.path.splitext(filename)[0]}.html":
+                file_path = os.path.join(directory, filename)
+                file_path = os.path.relpath(file_path, root)
+                print(file_path)
+                encoded_path = base64.b64encode(file_path.encode()).decode()
+                structure.append({"text": filename, "type": "file", "encoded_path": encoded_path})
+
+    return structure
 
 # Endpoint to list files in a directory
 @main.route('/edu-viewer/courses/list-files')
+@login_required
 def list_files():
     encoded_path = request.args.get('encoded_path')
     directory_path = base64.b64decode(encoded_path.encode()).decode()
-    files = list_files_recursive(directory_path)
+    files = build_folder_structure(directory_path, directory_path)
+    with open("structure.json", "w") as f:
+        json.dump(files, f, indent=4)
     return jsonify(files)
 
 # Endpoint to get file content
 @main.route('/edu-viewer/courses/file-content/<path:filename>')
+@login_required
 def file_content(filename):
     encoded_path = request.args.get('encoded_path')
     directory_path = base64.b64decode(encoded_path.encode()).decode()
+    filename =  base64.b64decode(filename.encode()).decode()
     file_path = os.path.join(directory_path, filename)
     return send_file(file_path)
 
