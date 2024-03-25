@@ -213,15 +213,25 @@
     </script>
      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-treeview@1.2.0/dist/bootstrap-treeview.min.css">
- 
+     <script>
+        function openNav() {
+        const sidebarParent = document.querySelector('.sidebar');
+      const isOpen = sidebarParent.style.left === '0px';
+
+      // Toggle the sidebar state
+      sidebarParent.style.left = isOpen ? '-300px' : '0px';
+      sidebarParent.style.overflowY = isOpen ? 'hidden' : 'auto';
+    }
+    </script>
 </head>
 
 <body>
+    <button id="open-btn" class="btn btn-primary btn-floating btn-file" style="position: absolute; z-index: 10000;" onclick="openNav()" type="button">☰</button>
     <div class="container">
         <div class="row">
             <div class="col-1">
-                <div id="treeview-container">
-                    <ul id="header"><p>File Explorer</p></ul>
+                <div id="treeview-container" class="sidebar">
+                <ul id="header"><p>File Explorer</p></ul>
                     <div id="treeview"></div>
                 </div>
             </div>
@@ -230,13 +240,6 @@
             </div>
         </div>
     </div>
-    <!-- <div class="editor-container">
-        <div class="explorer" id="explorer">
-            <ul class="file-list" id="file-list"></ul>
-        </div>
-        <div id="editor" class="monaco-editor"></div>
-
-    </div> -->
     <!-- Load Monaco Editor scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -11,6 +11,7 @@ body,
   height: 95%;
   overflow-y: auto;
   background-color: rgba(21, 21, 30, 1);
+  z-index: 9999 !important;
 }
 
 .list-group-item.node-treeview{
@@ -40,9 +41,9 @@ body,
 #header {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 2%;
   z-index: 9999;
+  background-color: rgba(21, 21, 30, 1);
 }
 
 #header > p {
@@ -55,4 +56,17 @@ body,
 
 .list-group-item{
   white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+  div[class*="sidebar"] {
+    left: -300px;
+    /* position: absolute; */
+  }
+  #open-btn {
+    display: block;
+  }
+  #header {
+    display: none;
+  }
 }
