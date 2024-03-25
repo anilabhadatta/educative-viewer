@@ -243,7 +243,6 @@ def build_folder_structure(directory, root):
             if filename != f"{os.path.splitext(filename)[0]}.html":
                 file_path = os.path.join(directory, filename)
                 file_path = os.path.relpath(file_path, root)
-                print(file_path)
                 encoded_path = base64.b64encode(file_path.encode()).decode()
                 structure.append({"text": filename, "type": "file", "encoded_path": encoded_path})
 
@@ -256,8 +255,6 @@ def list_files():
     encoded_path = request.args.get('encoded_path')
     directory_path = base64.b64decode(encoded_path.encode()).decode()
     files = build_folder_structure(directory_path, directory_path)
-    with open("structure.json", "w") as f:
-        json.dump(files, f, indent=4)
     return jsonify(files)
 
 # Endpoint to get file content
