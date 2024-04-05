@@ -24,7 +24,6 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 <body>
     <div class="hero-head" >
@@ -64,7 +63,7 @@
     <h1 style="text-align: center; color: white">Educative Viewer</h1>
     <h3 style="text-align: center; color: white">[([(folder)])]</h3>
     <br>
-    <form action="/edu-viewer/courses" method="POST">
+    <form action="[([( url_for('main.courses') )])]" method="POST">
         <button id="back-home" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
             <svg width="24px" height="24px" viewBox="0 0 30.72 30.72" class="icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                 <path  d="M6.72 14.4h19.2a0.96 0.96 0 1 1 0 1.92H6.72a0.96 0.96 0 0 1 0 -1.92z"/>

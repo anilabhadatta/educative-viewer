@@ -163,7 +163,7 @@ def topics(topics):
             "\\", "/")
         webbrowser.open(path)
     current_user_details = UserDetails(
-            username=current_user.username, last_visited_course=course_dir, last_visited_topic=topics, last_visited_index=itr)
+            username=current_user.username, last_visited_course=course_dir, last_visited_topic=topic_folders[itr], last_visited_index=itr)
     db.session.merge(current_user_details)
     db.session.commit()
     template_folder = "/".join(course_dir[len(root_course_dir)+1:].split(os.path.sep))
@@ -203,7 +203,7 @@ def topics_toc(topics, course_dir, toc, itr):
             "\\", "/")
         webbrowser.open(path)
     current_user_details = UserDetails(
-            username=current_user.username, last_visited_course=course_dir, last_visited_topic=topics, last_visited_index=itr)
+            username=current_user.username, last_visited_course=course_dir, last_visited_topic=toc_items[itr]['title'], last_visited_index=itr)
     db.session.merge(current_user_details)
     db.session.commit()
     template_folder = "/".join(course_dir[len(root_course_dir)+1:].split(os.path.sep))
