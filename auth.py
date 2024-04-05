@@ -6,14 +6,14 @@ from .models import User
 from . import db
 
 auth = Blueprint('auth', __name__)
-authcode = os.getenv('authToken', '')
+authtoken = os.getenv('authtoken', '')
 
-@auth.route('/edu-viewer/login')
+@auth.route('/login')
 def login():
     return render_template('login.html')
 
 
-@auth.route('/edu-viewer/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -33,18 +33,18 @@ def login_post():
     return redirect(url_for('main.courses'))
 
 
-@auth.route('/edu-viewer/signup')
+@auth.route('/signup')
 def signup():
     return render_template('signup.html')
 
 
-@auth.route('/edu-viewer/signup', methods=['POST'])
+@auth.route('/signup', methods=['POST'])
 def signup_post():
 
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
-    refer_code = request.form.get('refercode')
+    authtoken_fromreq = request.form.get('authtoken')
     
     # if this returns a user, then the email already exists in database
     user = User.query.filter_by(email=email).first(
@@ -53,8 +53,8 @@ def signup_post():
     if user:  # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email or Username address already exists')
         return redirect(url_for('auth.signup'))
-    if authcode != refer_code:
-        flash('Invalid Refer Code')
+    if authtoken != authtoken_fromreq:
+        flash('Invalid Auth Token')
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
@@ -67,7 +67,7 @@ def signup_post():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/edu-viewer/logout')
+@auth.route('/logout')
 @login_required
 def logout():
     logout_user()

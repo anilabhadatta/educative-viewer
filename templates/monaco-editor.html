@@ -8,6 +8,7 @@
     <!-- Load Monaco Editor -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="[([( url_for('static', filename='css/codes.css') )])]">
+    <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
     <style>
         
         .editor-container {
@@ -259,7 +260,7 @@
             const fileList = document.getElementById('file-list');
 
             function fetchFileContent(encoded_folder_path, item) {
-                fetch(`/edu-viewer/courses/file-content/${encoded_folder_path}?encoded_path=[([( encoded_path )])]`)
+                fetch(`[([( url_for('main.courses') )])]/file-content/${encoded_folder_path}?encoded_path=[([( encoded_path )])]`)
                     .then(response => response.text())
                     .then(content => {
                         editor.setValue(content);
@@ -271,7 +272,7 @@
             // Fetch folder structure and populate Bootstrap Treeview
             $(document).ready(function() {
                 // Fetch folder structure
-                fetch('/edu-viewer/courses/list-files?encoded_path=[([( encoded_path )])]')
+                fetch(`[([( url_for('main.courses') )])]/list-files?encoded_path=[([( encoded_path )])]`)
                     .then(response => response.json())
                     .then(data => {
                         $('#treeview').treeview({

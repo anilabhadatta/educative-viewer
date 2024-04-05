@@ -4,19 +4,9 @@
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-            Repo Version : 3.4 || Release Version 2.5(deprecated)
-            Update 2.5 Added support for HTML's inbuilt Next and Back button.
-            Update 2.6 : Fixed issue with HTML pages having blur in mobile view and moving across HTML.
-            Update 2.7 : Fixed the Jittering issue and redesigned the UI.
-            Update 2.8 : Fixed some styling issues.
-            Update 2.9 : Fixed issue related to katex rendering. #5
-            Update 3.0 : Added Sidebar for navigation between topics
-            Update 3.1 : Added auto scroll on sidebar
-            Update 3.2 : Fixed Alignment issues.
-            Update 3.3 : Fixed Pagination buttons.
-            Update 3.4 : Changed delimiters of Jinja Template.
+      Repo Version : 4.0.0-dev
 
-            This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
+      This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
 
@@ -26,31 +16,47 @@
       Python 3.9+
       OS: Win/Mac(Intel)/Linux(ARM/AMD)
 
-### Step 1: Clone the repository and create a terminal inside the cloned directory and run the following commands.
+### Step 1: Download & cd this project dir.
+
+      git clone https://github.com/anilabhadatta/educative-viewer.git
+      cd educative-viewer
 
 ### Step 2: Install the virtualenv package for python3 and create a virtual environment.
 
       pip3 install virtualenv
       virtualenv env
 
-### Step 3: Activate the virtual environment.
+### Step 3: Activate the virtual env and install dependencies and set Env variables.
 
 #### > (For Windows)
 
       env\Scripts\activate
+      pip install -r requirements.txt
+      cd ..
+      set course_dir=<path to course folder>
+      set FLASK_APP=educative-viewer
+      set authtoken=<any random keystring>
+      
 
 #### > (For MacOS/Linux)
 
       source env/bin/activate
-
-### Step 4: Install the required modules and execute educative-viewer using the following commands:
-
       pip3 install -r requirements.txt
-      python3 educative-viewer.py
+      cd ..
+      export course_dir=<path to folder>
+      export FLASK_APP=educative-viewer
+      export authtoken=<any random keystring>
+      
 
-### Step 5: Enter the course folder path in terminal and server will automatically start.
+### Step 4: Start the viewer using the following commands:
 
-#### > Enter local_server_ip:5000 in your desktop/mobile browser to open the viewer.
+      flask run
+
+      OR
+
+      gunicorn --workers=2 -b 127.0.0.1:5000 'educative-viewer:create_app()' --access-logfile ./educative-viewer/access.log --error-logfile ./educative-viewer/error.log --timeout 120000
+
+#### > Enter local_server_ip:5000/edu-viewer in your desktop/mobile browser to open the viewer.
 
      local_server_ip: Refers to the local ip in your ethernet/wifi adapter set by your router. eg: 192.168.1.111
 

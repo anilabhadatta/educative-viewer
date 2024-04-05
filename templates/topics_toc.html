@@ -10,10 +10,6 @@
     <title>Educative Viewer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/x-icon" sizes="32x32" href="/edu-viewer/static/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="/edu-viewer/static/images/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
     <style>
         body::-webkit-scrollbar {
             display: none;
@@ -91,7 +87,7 @@
             </div>
         </nav>
     </div>
-    <form action="/edu-viewer/courses/topics" method="POST">
+    <form action="[([( url_for('main.courses') )])]/topics" method="POST">
         <div id="main-content">
             [([(=  include webpage =)])]
         </div>
@@ -114,7 +110,7 @@
         </div>
     </form>
     <div>
-        <form action="/edu-viewer/courses/topics" method="POST">
+        <form action="[([( url_for('main.courses') )])]/topics" method="POST">
             <button id="back" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
                 <svg width="24px" height="24px" viewBox="0 0 30.72 30.72" class="icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path  d="M6.72 14.4h19.2a0.96 0.96 0 1 1 0 1.92H6.72a0.96 0.96 0 0 1 0 -1.92z"/>
                     <path  d="m7.117 15.36 7.962 7.96a0.96 0.96 0 0 1 -1.359 1.359l-8.64 -8.64a0.96 0.96 0 0 1 0 -1.359l8.64 -8.64a0.96 0.96 0 1 1 1.359 1.359L7.117 15.36z"/>
@@ -132,7 +128,7 @@
             </button>
             
             [([(= if code_present =)])]
-                <a id="code" target="_blank" class="btn btn-primary btn-floating btn-file" href="/edu-viewer/courses/code/[([(folder)])]">
+                <a id="code" target="_blank" class="btn btn-primary btn-floating btn-file" href="[([( url_for('main.courses') )])]/code/[([(folder)])]">
                     <svg width="24px" height="24px" viewBox="0 0 0.45 0.45" fill="currentColor"  xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.405 0.15a0.015 0.015 0 0 0 0 -0.03v0.03ZM0.089 0.084a0.015 0.015 0 1 0 -0.028 0.011l0.028 -0.011ZM0.42 0.225A0.195 0.195 0 0 1 0.225 0.42v0.03A0.225 0.225 0 0 0 0.45 0.225h-0.03ZM0.225 0.42A0.195 0.195 0 0 1 0.03 0.225H0A0.225 0.225 0 0 0 0.225 0.45v-0.03ZM0.03 0.225A0.195 0.195 0 0 1 0.225 0.03V0A0.225 0.225 0 0 0 0 0.225h0.03ZM0.225 0.03A0.195 0.195 0 0 1 0.42 0.225h0.03A0.225 0.225 0 0 0 0.225 0v0.03Zm0 0.12h0.18V0.12h-0.18v0.03ZM0.149 0.234l-0.06 -0.15 -0.028 0.011 0.06 0.15 0.028 -0.011ZM0.277 0.279l-0.11 0.147 0.024 0.018 0.11 -0.147 -0.024 -0.018ZM0.225 0.3A0.075 0.075 0 0 1 0.15 0.225H0.12A0.105 0.105 0 0 0 0.225 0.33v-0.03ZM0.3 0.225A0.075 0.075 0 0 1 0.225 0.3v0.03A0.105 0.105 0 0 0 0.33 0.225h-0.03ZM0.225 0.15A0.075 0.075 0 0 1 0.3 0.225h0.03A0.105 0.105 0 0 0 0.225 0.12v0.03Zm0 -0.03A0.105 0.105 0 0 0 0.12 0.225h0.03A0.075 0.075 0 0 1 0.225 0.15V0.12Z" fill="currentColor" />
                     </svg>

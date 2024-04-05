@@ -1,8 +1,6 @@
 # import json
 import os
 from collections import defaultdict
-import webbrowser
-from flask import redirect, render_template, request
 import natsort
 
 

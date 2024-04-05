@@ -29,8 +29,8 @@ def create_app():
     app.jinja_env.variable_end_string = ')])]'
     app.jinja_env.block_start_string = '[([(='
     app.jinja_env.block_end_string = '=)])]'
-    app.jinja_env.comment_start_string = '{#'
-    app.jinja_env.comment_end_string = '#}'
+    app.jinja_env.comment_start_string = "{[(#"
+    app.jinja_env.comment_end_string = "#)]}"
     
     @app.before_request
     def create_tables():
@@ -51,10 +51,10 @@ def create_app():
 
     # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_blueprint, url_prefix='/edu-viewer')
 
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(main_blueprint, url_prefix='/edu-viewer')
 
     return app

@@ -2,7 +2,7 @@ import base64
 import glob
 import json
 import webbrowser
-from flask import Blueprint, jsonify, render_template, request, redirect, send_file, session, url_for, flash
+from flask import Blueprint, jsonify, render_template, request, redirect, send_file, url_for
 from flask_login import login_required, current_user
 import natsort
 
@@ -16,17 +16,17 @@ import os
 main = Blueprint('main', __name__)
 root_course_dir = os.getenv('course_dir', '.')
 
-@main.route('/edu-viewer/')
+@main.route('/')
 def index():
     return render_template('index.html')
 
 
-@main.route('/edu-viewer/favicon.ico')
+@main.route('/favicon.ico')
 def favicon():
-    return url_for('static', filename='images/favicon.ico')
+    return url_for('static', filename='asset/favicon.ico')
 
 
-@main.route('/edu-viewer/courses', methods=['GET', 'POST'])
+@main.route('/courses', methods=['GET', 'POST'])
 @login_required
 def courses():
     highlight_idx = None
@@ -49,7 +49,7 @@ def courses():
             
         if folder+".html" in os.listdir(course_dir):
             # load_templates()
-            return redirect(f"/edu-viewer/courses/{folder}")
+            return redirect(url_for('main.courses')+f"/{folder}")
         elif folder+".html" not in os.listdir(course_dir):
             folders = natsort.natsorted(load_folder(course_dir))
             if last_visited_topic in folders:
@@ -126,7 +126,7 @@ def build_toc_render_items(toc, highlight_idx=0):
 
 
 
-@main.route("/edu-viewer/courses/<topics>", methods=['GET', 'POST'])
+@main.route("/courses/<topics>", methods=['GET', 'POST'])
 @login_required
 def topics(topics):
     current_user_details = UserDetails.query.filter_by(
@@ -157,7 +157,7 @@ def topics(topics):
         itr = int(request.form.get('sidebar-topic'))
     elif request.method == 'POST' and "home" in request.form:
         itr = 0
-        return redirect("/edu-viewer/courses")
+        return redirect(url_for('main.courses'))
     elif request.method == 'POST' and request.form.get("code_filesystem"):
         path = f"file:///{course_dir}/{topic_folders[itr]}".replace(
             "\\", "/")
@@ -197,7 +197,7 @@ def topics_toc(topics, course_dir, toc, itr):
         itr = int(request.form.get('sidebar-topic'))
     elif request.method == 'POST' and "home" in request.form:
         itr = 0
-        return redirect("/edu-viewer/courses")
+        return redirect(url_for('main.courses'))
     elif request.method == 'POST' and request.form.get("code_filesystem"):
         path = f"file:///{course_dir}/{toc_items[itr]['title']}".replace(
             "\\", "/")
@@ -213,7 +213,7 @@ def topics_toc(topics, course_dir, toc, itr):
         "topics_toc.html", code_present=is_code_present, webpage=webpage, folder=f"{toc_items[itr]['title']}", toc_items=toc_items, itr=itr)
     return rendered_html
 
-@main.route("/edu-viewer/courses/code/<codes>", methods=['GET', 'POST'])
+@main.route("/courses/code/<codes>", methods=['GET', 'POST'])
 @login_required
 def codes(codes):
     current_user_details = UserDetails.query.filter_by(
@@ -249,7 +249,7 @@ def build_folder_structure(directory, root):
     return structure
 
 # Endpoint to list files in a directory
-@main.route('/edu-viewer/courses/list-files')
+@main.route('/courses/list-files')
 @login_required
 def list_files():
     encoded_path = request.args.get('encoded_path')
@@ -258,7 +258,7 @@ def list_files():
     return jsonify(files)
 
 # Endpoint to get file content
-@main.route('/edu-viewer/courses/file-content/<path:filename>')
+@main.route('/courses/file-content/<path:filename>')
 @login_required
 def file_content(filename):
     encoded_path = request.args.get('encoded_path')
