@@ -50,11 +50,11 @@
 
 ### Step 4: Start the viewer using the following commands:
 
-      flask run
+      flask run --host=0.0.0.0
 
       OR
 
-      gunicorn --workers=2 -b 127.0.0.1:5000 'educative-viewer:create_app()' --access-logfile ./educative-viewer/access.log --error-logfile ./educative-viewer/error.log --timeout 120000
+      gunicorn --workers=2 -b 0.0.0.0:5000 'educative-viewer:create_app()' --access-logfile ./educative-viewer/access.log --error-logfile ./educative-viewer/error.log --timeout 120000
 
 #### > Enter local_server_ip:5000/edu-viewer in your desktop/mobile browser to open the viewer.
 
