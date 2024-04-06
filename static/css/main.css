@@ -26,63 +26,62 @@ body,
 #btn-back-to-top {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 10px;
   z-index: 9999;
 }
 
 #back {
   position: fixed;
-  bottom: 110px;
-  right: 20px;
+  bottom: 20px;
+  right: 120px;
   z-index: 9999;
 }
 #code {
   position: fixed;
-  bottom: 246px;
-  right: 20px;
+  bottom: 20px;
+  right: 285px;
   z-index: 9999;
 }
 #code_filesystem {
   position: fixed;
-  bottom: 290px;
-  right: 20px;
+  bottom: 20px;
+  right: 340px;
   z-index: 9999;
 }
 #next {
   position: fixed;
-  bottom: 156px;
-  right: 20px;
+  bottom: 20px;
+  right: 65px;
   z-index: 9999;
 }
 
 #refresh {
   position: fixed;
-  bottom: 200px;
-  right: 20px;
+  bottom: 20px;
+  right: 175px;
   z-index: 9999;
 }
 
 #home {
   position: fixed;
-  bottom: 64px;
-  right: 20px;
+  bottom: 20px;
+  right: 230px;
   z-index: 9999;
 }
 #refresh-home {
   position: fixed;
-  bottom: 115px;
-  right: 20px;
+  bottom: 20px;
+  right: 130px;
   z-index: 9999;
 }
 #back-home {
   position: fixed;
-  bottom: 67px;
-  right: 20px;
+  bottom: 20px;
+  right: 75px;
   z-index: 9999;
 }
 
 #open-btn {
-  display: none;
   position: fixed;
   top: 0px;
   z-index: 9999;
@@ -125,6 +124,7 @@ div[class*="sidebar"] {
   height: 95%;
   overflow-y: auto;
   background-color: rgba(21, 21, 30, 1);
+  z-index: 99999999;
 }
 
 #sidebar-ul {
@@ -171,6 +171,7 @@ div[class*="sidebar"] {
   div[class*="sidebar"] {
     left: -300px;
     /* position: absolute; */
+    z-index: 99999999;
   }
   #open-btn {
     display: block;
