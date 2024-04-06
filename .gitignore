@@ -134,3 +134,4 @@ build
 .spec
 pyinstaller_command.txt
 todo.txt
+flask_session

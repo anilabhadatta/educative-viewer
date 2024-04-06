@@ -12,3 +12,4 @@ natsort==8.4.0
 SQLAlchemy==2.0.29
 typing_extensions==4.11.0
 Werkzeug==3.0.2
+gunicorn==21.2.0
