@@ -135,4 +135,4 @@ build
 pyinstaller_command.txt
 todo.txt
 flask_session
-.idea1
+.idea
