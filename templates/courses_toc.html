@@ -25,6 +25,15 @@
             display: none;
         }
     </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.focus-button');
+            buttons.forEach(function (button) {
+                button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
+                button.focus();
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="hero-head">
@@ -86,7 +95,7 @@
     <input class="btn btn-primary active" style="display: block; width: 100%; font-weight: bolder; cursor: auto;"
            type="button" name="folder" value="[([(toc_item['title'])])]">
     [([(= else =)])]
-    <input class="btn btn-primary btn-file"
+    <input class="btn btn-primary btn-file [([(toc_item['focus'])])]"
            style="display: block; width: 100%; color: [([(toc_item['color'])])] !important;" type="submit" name="folder"
            value="[([(toc_item['title'])])]">
     [([(= endif =)])]
