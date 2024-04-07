@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 import natsort
 import os
 
-from .utility import check_code_present, load_topics, load_toc_if_exist, build_toc_render_items, \
+from .os_utility import check_code_present, load_topics, load_toc_if_exist, build_toc_render_items, \
     load_folder, build_folder_structure_for_monaco_sidebar
 from .models import CurrentPath, CourseDetails
 from . import db
@@ -119,6 +119,9 @@ def courses():
     return render_template("courses.html", folder_list=folders, folder=folder, highlight_idx=highlight_idx)
 
 
+'''
+Endpoint to load topics.
+'''
 @main.route("/courses/<topics>", methods=['GET', 'POST'])
 @login_required
 def topics(topics):
@@ -145,18 +148,21 @@ def topics(topics):
         itr = int(topic_folders.index(topics))
     except ValueError:
         pass
-    if request.method == "POST" and "back" in request.form and itr > 0:
-        itr -= 1
-    elif request.method == "POST" and "next" in request.form and itr < len(topic_folders) - 1:
-        itr += 1
-    elif request.method == 'POST' and "sidebar-topic" in request.form:
-        itr = int(request.form.get('sidebar-topic'))
-    elif request.method == 'POST' and "home" in request.form:
-        return redirect(url_for('main.courses'))
-    elif request.method == 'POST' and request.form.get("code_filesystem"):
-        path = f"file:///{course_dir}/{topic_folders[itr]}".replace("\\", "/")
-        webbrowser.open(path)
-
+    if request.method == "POST":
+        if "back" in request.form and itr > 0:
+            itr -= 1
+        elif "next" in request.form and itr < len(topic_folders) - 1:
+            itr += 1
+        elif "sidebar-topic" in request.form:
+            itr = int(request.form.get('sidebar-topic'))
+        elif "home" in request.form:
+            return redirect(url_for('main.courses'))
+        elif request.form.get("code_filesystem"):
+            path = f"file:///{course_dir}/{topic_folders[itr]}".replace("\\", "/")
+            webbrowser.open(path)
+    '''
+    GET request, this is used to refresh the webpage if required    
+    '''
     current_course_details = CourseDetails(username=current_user.username, last_visited_course=last_visited_course,
                                            last_visited_topic=topic_folders[itr], last_visited_index=itr)
     db.session.merge(current_course_details)
@@ -171,34 +177,41 @@ def topics(topics):
     return rendered_html
 
 
+'''
+Method to load the toc contained topics
+'''
 def topics_toc(topics, course_dir, toc, itr):
     toc_items = build_toc_render_items(toc)
     try:
         itr = next(i for i, toc_item in enumerate(toc_items) if toc_item['title'] == topics)
     except StopIteration:
         pass
-    if request.method == "POST" and "back" in request.form and itr > 0:
-        if toc_items[itr - 1]['is_category']:
-            if itr - 1 != 0:
-                itr -= 1
-            else:
-                itr += 1
-        itr -= 1
-    elif request.method == "POST" and "next" in request.form and itr < len(toc_items) - 1:
-        if toc_items[itr + 1]['is_category']:
-            if itr + 1 != len(toc_items) - 1:
-                itr += 1
-            else:
-                itr -= 1
-        itr += 1
-    elif request.method == 'POST' and "sidebar-topic" in request.form:
-        itr = int(request.form.get('sidebar-topic'))
-    elif request.method == 'POST' and "home" in request.form:
-        return redirect(url_for('main.courses'))
-    elif request.method == 'POST' and request.form.get("code_filesystem"):
-        path = f"file:///{course_dir}/{toc_items[itr]['title']}".replace("\\", "/")
-        webbrowser.open(path)
+    if request.method == "POST":
+        if "back" in request.form and itr > 0:
+            if toc_items[itr - 1]['is_category']:
+                if itr - 1 != 0:
+                    itr -= 1
+                else:
+                    itr += 1
+            itr -= 1
+        elif "next" in request.form and itr < len(toc_items) - 1:
+            if toc_items[itr + 1]['is_category']:
+                if itr + 1 != len(toc_items) - 1:
+                    itr += 1
+                else:
+                    itr -= 1
+            itr += 1
+        elif "sidebar-topic" in request.form:
+            itr = int(request.form.get('sidebar-topic'))
+        elif "home" in request.form:
+            return redirect(url_for('main.courses'))
+        elif request.form.get("code_filesystem"):
+            path = f"file:///{course_dir}/{toc_items[itr]['title']}".replace("\\", "/")
+            webbrowser.open(path)
 
+    '''
+    GET request, this is used to refresh the webpage if required    
+    '''
     last_visited_course = course_dir.split(os.path.sep)[-1]
     current_course_details = CourseDetails(username=current_user.username, last_visited_course=last_visited_course,
                                            last_visited_topic=toc_items[itr]['title'], last_visited_index=itr)
