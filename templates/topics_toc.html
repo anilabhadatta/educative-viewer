@@ -106,10 +106,7 @@
                 [([(= endfor =)])]
             </ul>
         </div>
-    </form>
-    <div>
-        <form action="[([( url_for('main.courses') )])]/topics" method="POST">
-            <button id="back" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
+        <button id="back" name="back" class="btn btn-primary btn-floating btn-file" type="submit">
                 <svg width="24px" height="24px" viewBox="0 0 30.72 30.72" class="icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path  d="M6.72 14.4h19.2a0.96 0.96 0 1 1 0 1.92H6.72a0.96 0.96 0 0 1 0 -1.92z"/>
                     <path  d="m7.117 15.36 7.962 7.96a0.96 0.96 0 0 1 -1.359 1.359l-8.64 -8.64a0.96 0.96 0 0 1 0 -1.359l8.64 -8.64a0.96 0.96 0 1 1 1.359 1.359L7.117 15.36z"/>
                 </svg>
@@ -124,7 +121,7 @@
                     <path d="M20.71 11.29l-6-6a1 1 0 0 0-1.42 1.42L17.59 11H4a1 1 0 0 0 0 2h13.59l-4.3 4.29a1 1 0 0 0 1.42 1.42l6-6a1 1 0 0 0 0-1.42z"/>
                 </svg>
             </button>
-            
+
             [([(= if code_present =)])]
                 <a id="code" target="_blank" class="btn btn-primary btn-floating btn-file" href="[([( url_for('main.courses') )])]/code/[([(folder)])]">
                     <svg width="24px" height="24px" viewBox="0 0 0.45 0.45" fill="currentColor"  xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +134,8 @@
                     </svg>
                 </button>
             [([(=  endif =)])]
-        </form>
+    </form>
+    <div>
         <button type="button" class="btn btn-primary btn-floating btn-file" id="btn-back-to-top">
             <svg width="24px" height="24px" viewBox="0 0 0.72 0.72" id="up"  xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                 <path id="primary" d="m0.591 0.279 -0.21 -0.21a0.03 0.03 0 0 0 -0.043 0l-0.21 0.21a0.03 0.03 0 0 0 0.043 0.043L0.33 0.162V0.63a0.03 0.03 0 0 0 0.06 0V0.162l0.159 0.159a0.03 0.03 0 0 0 0.043 0 0.03 0.03 0 0 0 0 -0.043Z"/>
@@ -151,7 +149,6 @@
                     </g>
                 </svg>
             </button>
-
             <button id="open-btn" class="btn btn-primary btn-floating btn-file" onclick="openNav()" type="button">☰</button>
         <script src="[([( url_for('static', filename='js/scroll.js'))])]"></script>
     </div>

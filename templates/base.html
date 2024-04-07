@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Portfolio-Resume-Builder</title>
+    <title>Educative Viewer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
     <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
@@ -25,8 +25,7 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
- 
+
     [([(= block css =)])]
     [([(= endblock =)])]
 </head>
@@ -38,11 +37,6 @@
                 <div class="container">
 
                     <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-start">
-                            [([(= block username =)])]
-                             
-                            [([(= endblock =)])]
-                        </div>
                         <div class="navbar-end">
                             <a href="[([( url_for('main.index') )])]" class="navbar-item">
                                 Home
@@ -70,18 +64,11 @@
                 </div>
             </nav>
         </div>
-            [([(= block portfolio_form =)])]
-             
-            [([(= endblock =)])]
+
         <div class="hero-body">
                [([(= block content =)])]
                [([(= endblock =)])]
-                
-        </div>
-        <div class="hero-foot">
-            [([(= block foot_content =)])] 
-            [([(= endblock =)])]
-            
+
         </div>
 </body>
 </html>

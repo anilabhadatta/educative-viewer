@@ -9,35 +9,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="[([( url_for('static', filename='css/codes.css') )])]">
     <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
-    <style>
-        
-        .editor-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .explorer {
-            width: 250px;
-            background-color: #1e1e1e;
-            /* Dark background */
-            color: #fff;
-            /* Light text */
-            padding: 10px;
-            overflow-y: auto;
-        }
-
-        .monaco-editor {
-            flex: 1;
-            height: 100%;
-            background-color: #1e1e1e;
-            /* Dark background */
-            color: #fff;
-            /* Light text */
-        }
-    </style>
     <script>
         const languageMap = {
             'js': 'javascript',
+            'javascript': 'javascript',
+            'csharp': 'csharp',
+            'cplusplus': 'cpp',
+            'python3': 'python',
             'html': 'html',
             'css': 'css',
             'py': 'python',

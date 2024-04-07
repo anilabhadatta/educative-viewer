@@ -71,13 +71,13 @@ body,
 #refresh-home {
   position: fixed;
   bottom: 20px;
-  right: 130px;
+  right: 120px;
   z-index: 9999;
 }
 #back-home {
   position: fixed;
   bottom: 20px;
-  right: 75px;
+  right: 65px;
   z-index: 9999;
 }
 
