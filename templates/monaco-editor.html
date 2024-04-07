@@ -6,294 +6,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monaco Editor with Explorer</title>
     <!-- Load Monaco Editor -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="[([( url_for('static', filename='css/editor.main.css') )])]">
     <link rel="stylesheet" href="[([( url_for('static', filename='css/codes.css') )])]">
     <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
+    <script src="[([( url_for('static', filename='js/language-map.js') )])]"></script>
+    <link href="[([( url_for('static', filename='css/bootstrap.min.css') )])]" rel="stylesheet">
+    <link rel="stylesheet" href="[([( url_for('static', filename='css/bootstrap-treeview.min.css') )])]">
+    <script src="[([( url_for('static', filename='js/jquery-3.5.1.min.js') )])]"></script>
+    <script src="[([( url_for('static', filename='js/bootstrap.min.js') )])]"></script>
+    <script src="[([( url_for('static', filename='js/bootstrap-treeview.min.js') )])]"></script>
+    <script src="[([( url_for('static', filename='js/loader.js') )])]"></script>
     <script>
-        const languageMap = {
-            'js': 'javascript',
-            'javascript': 'javascript',
-            'csharp': 'csharp',
-            'cplusplus': 'cpp',
-            'python3': 'python',
-            'html': 'html',
-            'css': 'css',
-            'py': 'python',
-            'java': 'java',
-            'rb': 'ruby',
-            'php': 'php',
-            'cpp': 'cpp',
-            'c': 'c',
-            'cs': 'csharp',
-            'swift': 'swift',
-            'go': 'go',
-            'rust': 'rust',
-            'ts': 'typescript',
-            'jsx': 'jsx',
-            'tsx': 'tsx',
-            'json': 'json',
-            'yaml': 'yaml',
-            'xml': 'xml',
-            'sql': 'sql',
-            'asm': 'assembly',
-            'sh': 'shell',
-            'perl': 'perl',
-            'r': 'r',
-            'lua': 'lua',
-            'dart': 'dart',
-            'scala': 'scala',
-            'swift': 'swift',
-            'matlab': 'matlab',
-            'powershell': 'powershell',
-            'sass': 'sass',
-            'scss': 'scss',
-            'less': 'less',
-            'coffee': 'coffeescript',
-            'hbs': 'handlebars',
-            'ejs': 'ejs',
-            'md': 'markdown',
-            'tex': 'latex',
-            'bat': 'batchfile',
-            'csv': 'csv',
-            'graphql': 'graphql',
-            'perl': 'perl',
-            'swift': 'swift',
-            'vb': 'vb',
-            'vbs': 'vbscript',
-            'yml': 'yaml',
-            'ini': 'ini',
-            'toml': 'toml',
-            'diff': 'diff',
-            'patch': 'patch',
-            'nginx': 'nginx',
-            'dockerfile': 'dockerfile',
-            'racket': 'racket',
-            'elm': 'elm',
-            'erl': 'erlang',
-            'ex': 'elixir',
-            'lua': 'lua',
-            'swift': 'swift',
-            'tsx': 'tsx',
-            'jsx': 'jsx',
-            'vue': 'vue',
-            'yaml': 'yaml',
-            'toml': 'toml',
-            'graphql': 'graphql',
-            'dockerfile': 'dockerfile',
-            'makefile': 'makefile',
-            'cmake': 'cmake',
-            'perl': 'perl',
-            'raku': 'raku',
-            'racket': 'racket',
-            'elm': 'elm',
-            'erl': 'erlang',
-            'f': 'fortran',
-            'f90': 'fortran',
-            'f95': 'fortran',
-            'for': 'fortran',
-            'f03': 'fortran',
-            'f08': 'fortran',
-            'hs': 'haskell',
-            'ts': 'typescript',
-            'kt': 'kotlin',
-            'kts': 'kotlin',
-            'asm': 'assembly',
-            'adoc': 'asciidoc',
-            'sh': 'shell',
-            'csh': 'shell',
-            'bash': 'shell',
-            'zsh': 'shell',
-            'fish': 'shell',
-            'r': 'r',
-            'rmd': 'rmarkdown',
-            'ipynb': 'jupyter-notebook',
-            'pl': 'perl',
-            'sql': 'sql',
-            'groovy': 'groovy',
-            'jsp': 'jsp',
-            'ejs': 'ejs',
-            'd': 'd',
-            'nim': 'nim',
-            'scss': 'scss',
-            'sass': 'sass',
-            'styl': 'stylus',
-            'go': 'go',
-            'lua': 'lua',
-            'moon': 'moonscript',
-            'nix': 'nix',
-            'mm': 'objectivec',
-            'tcl': 'tcl',
-            'r': 'r',
-            'html': 'html',
-            'xml': 'xml',
-            'sql': 'sql',
-            'graphql': 'graphql',
-            'json': 'json',
-            'yml': 'yaml',
-            'toml': 'toml',
-            'ini': 'ini',
-            'sh': 'shell',
-            'bat': 'batchfile',
-            'fish': 'fish',
-            'ps1': 'powershell',
-            'gradle': 'gradle',
-            'groovy': 'groovy',
-            'properties': 'properties',
-            'md': 'markdown',
-            'rst': 'restructuredtext',
-            'as': 'actionscript',
-            'mxml': 'mxml',
-            'pl': 'perl',
-            'pm': 'perl',
-            't': 'perl',
-            'pod': 'perl',
-            'cgi': 'perl',
-            'js': 'javascript',
-            'ts': 'typescript',
-            'jsx': 'jsx',
-            'tsx': 'tsx',
-            'sh': 'shell',
-            'c': 'c',
-            'h': 'c',
-            'm': 'objectivec',
-            'cs': 'csharp',
-            'cpp': 'cpp',
-            'hpp': 'cpp',
-            'cc': 'cpp',
-            'hh': 'cpp',
-            'hxx': 'cpp',
-            'cxx': 'cpp',
-            'rs': 'rust',
-            'swift': 'swift',
-            'py': 'python',
-            'java': 'java',
-            'kt': 'kotlin',
-            'rb': 'ruby',
-            'coffee': 'coffeescript',
-            'go': 'go',
-            'dart': 'dart',
-            'elm': 'elm',
-            'php': 'php',
-            'sql': 'sql',
-            'yaml': 'yaml',
-            'xml': 'xml',
-            'hbs': 'handlebars',
-            'ejs': 'ejs',
-            'json': 'json',
-            'csv': 'csv',
-            'graphql': 'graphql',
-            'md': 'markdown',
-            'tex': 'latex',
-            'diff': 'diff',
-            'patch': 'patch',
-            'nginx': 'nginx',
-            'dockerfile': 'dockerfile',
-        };
-    </script>
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-treeview@1.2.0/dist/bootstrap-treeview.min.css">
-     <script>
         function openNav() {
-        const sidebarParent = document.querySelector('.sidebar');
-      const isOpen = sidebarParent.style.left === '0px';
+            const sidebarParent = document.querySelector('.sidebar');
+            const isOpen = sidebarParent.style.left === '0px';
 
-      // Toggle the sidebar state
-      sidebarParent.style.left = isOpen ? '-300px' : '0px';
-      sidebarParent.style.overflowY = isOpen ? 'hidden' : 'auto';
-    }
+            // Toggle the sidebar state
+            sidebarParent.style.left = isOpen ? '-300px' : '0px';
+            sidebarParent.style.overflowY = isOpen ? 'hidden' : 'auto';
+        }
     </script>
 </head>
 
 <body>
-    <button id="open-btn" class="btn btn-primary btn-floating btn-file" style="position: absolute; z-index: 10000;" onclick="openNav()" type="button">☰</button>
-    <div class="container">
-        <div class="row">
-            <div class="col-1">
-                <div id="treeview-container" class="sidebar">
+<button id="open-btn" class="btn btn-primary btn-floating btn-file" style="position: absolute; z-index: 10000;"
+        onclick="openNav()" type="button">☰
+</button>
+<div class="container">
+    <div class="row">
+        <div class="col-1">
+            <div id="treeview-container" class="sidebar">
                 <ul id="header"><p>File Explorer</p></ul>
-                    <div id="treeview"></div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div id="editor" class="editor-container"></div>
+                <div id="treeview"></div>
             </div>
         </div>
+        <div class="col-2">
+            <div id="editor" class="editor-container"></div>
+        </div>
     </div>
-    <!-- Load Monaco Editor scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-treeview@1.2.0/dist/bootstrap-treeview.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
-    <script>
-        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
+</div>
+<!-- Load Monaco Editor scripts -->
+<script>
+    require.config({paths: {'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs'}});
 
-        require(['vs/editor/editor.main'], function () {
-            const editor = monaco.editor.create(document.getElementById('editor'), {
-                value: 'Welcome to Monaco Editor!',
-                language: 'plaintext',
-                theme: 'vs-dark'
-            });
+    require(['vs/editor/editor.main'], function () {
+        const editor = monaco.editor.create(document.getElementById('editor'), {
+            value: 'Welcome to Monaco Editor!',
+            language: 'plaintext',
+            theme: 'vs-dark'
+        });
 
-            const explorer = document.getElementById('explorer');
-            const fileList = document.getElementById('file-list');
+        const explorer = document.getElementById('explorer');
+        const fileList = document.getElementById('file-list');
 
-            function fetchFileContent(encoded_folder_path, item) {
-                fetch(`[([( url_for('main.courses') )])]/file-content/${encoded_folder_path}?encoded_path=[([( encoded_path )])]`)
-                    .then(response => response.text())
-                    .then(content => {
-                        editor.setValue(content);
-                        monaco.editor.setModelLanguage(editor.getModel(), getLanguage(item));
-                    })
-                    .catch(error => console.error('Error fetching file content:', error));
-            }
+        function fetchFileContent(encoded_folder_path, item) {
+            fetch(`[([( url_for('main.courses') )])]/file-content/${encoded_folder_path}?encoded_path=[([( encoded_path )])]`)
+                .then(response => response.text())
+                .then(content => {
+                    editor.setValue(content);
+                    monaco.editor.setModelLanguage(editor.getModel(), getLanguage(item));
+                })
+                .catch(error => console.error('Error fetching file content:', error));
+        }
 
-            // Fetch folder structure and populate Bootstrap Treeview
-            $(document).ready(function() {
-                // Fetch folder structure
-                fetch(`[([( url_for('main.courses') )])]/list-files?encoded_path=[([( encoded_path )])]`)
-                    .then(response => response.json())
-                    .then(data => {
-                        $('#treeview').treeview({
-                            data: data,
-                            onNodeSelected: function(event, node) {
-                                if (node.type === 'file') {
-                                    fetchFileContent(node.encoded_path, node.text);
-                                }
+        // Fetch folder structure and populate Bootstrap Treeview
+        $(document).ready(function () {
+            // Fetch folder structure
+            fetch(`[([( url_for('main.courses') )])]/list-files?encoded_path=[([( encoded_path )])]`)
+                .then(response => response.json())
+                .then(data => {
+                    $('#treeview').treeview({
+                        data: data,
+                        onNodeSelected: function (event, node) {
+                            if (node.type === 'file') {
+                                fetchFileContent(node.encoded_path, node.text);
                             }
-                        });
-                    })
-                    .catch(error => console.error('Error fetching folder structure:', error));
-            });
-            function getLanguage(fileName) {
-                const words = splitByHyphenOrSpace(fileName);
-                for (let i = 0; i < words.length; i++) {
-                    var ext = switchCaseLanguage(words[i]);
-                    if (ext !== 'plaintext') {
-                        return ext;
-                    }
-                }
-                var extFile = fileName.split('.').pop();
-                var ext = switchCaseLanguage(extFile);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching folder structure:', error));
+        });
+
+        function getLanguage(fileName) {
+            const words = splitByHyphenOrSpace(fileName);
+            for (let i = 0; i < words.length; i++) {
+                var ext = switchCaseLanguage(words[i]);
                 if (ext !== 'plaintext') {
                     return ext;
                 }
-                return 'plaintext';
             }
+            var extFile = fileName.split('.').pop();
+            var ext = switchCaseLanguage(extFile);
+            if (ext !== 'plaintext') {
+                return ext;
+            }
+            return 'plaintext';
+        }
 
-            function switchCaseLanguage(word) {
-                console.log(languageMap[word]);
-                if (languageMap[word] !== undefined) {
-                    return languageMap[word];
-                }
-                return 'plaintext';
+        function switchCaseLanguage(word) {
+            console.log(languageMap[word]);
+            if (languageMap[word] !== undefined) {
+                return languageMap[word];
             }
-            function splitByHyphenOrSpace(fileName) {
-                var fileNameWithoutExtension = fileName.replace(/\.[^/.]+$/, "");
-                var words = fileNameWithoutExtension.split(/ |-/);
-                return words.filter(word => word !== "");
-            }
-        });
-    </script>
+            return 'plaintext';
+        }
+
+        function splitByHyphenOrSpace(fileName) {
+            var fileNameWithoutExtension = fileName.replace(/\.[^/.]+$/, "");
+            var words = fileNameWithoutExtension.split(/ |-/);
+            return words.filter(word => word !== "");
+        }
+    });
+</script>
 </body>
 
 </html>

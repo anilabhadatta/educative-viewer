@@ -5,11 +5,10 @@ from flask_login import login_required, current_user
 import natsort
 import os
 
+from .db_utility import get_current_path_details, get_current_course_details, commit_current_course_details, \
+    commit_current_path_details
 from .os_utility import check_code_present, load_topics, load_toc_if_exist, build_toc_render_items, \
     load_folder, build_folder_structure_for_monaco_sidebar
-from .models import CurrentPath, CourseDetails
-from . import db
-
 
 main = Blueprint('main', __name__)
 root_course_dir = os.getenv('course_dir', '.')
@@ -31,12 +30,11 @@ def courses():
     last_visited_index = 0
     course_dir = root_course_dir
 
-    current_path_details = CurrentPath.query.filter_by(username=current_user.username).first()
+    current_path_details = get_current_path_details(current_user.username)
     if current_path_details is not None:
         course_dir = current_path_details.last_visited_directory
         last_visited_course = current_path_details.last_visited_course
-        current_course_details = CourseDetails.query.filter_by(username=current_user.username,
-                                                               last_visited_course=last_visited_course).first()
+        current_course_details = get_current_course_details(current_user.username, last_visited_course)
         if current_course_details is not None:
             last_visited_topic = current_course_details.last_visited_topic
             last_visited_index = current_course_details.last_visited_index
@@ -50,8 +48,7 @@ def courses():
             course_dir = os.path.join(course_dir, folder)
             folders = natsort.natsorted(os.listdir(course_dir))
             last_visited_course = course_dir.split(os.path.sep)[-1]
-            current_course_details = CourseDetails.query.filter_by(username=current_user.username,
-                                                                   last_visited_course=last_visited_course).first()
+            current_course_details = get_current_course_details(current_user.username, last_visited_course)
             if current_course_details is not None:
                 last_visited_topic = current_course_details.last_visited_topic
                 last_visited_index = current_course_details.last_visited_index
@@ -59,22 +56,18 @@ def courses():
                 '''
                 If topic.html is found, render the html then
                 '''
-                current_course_details = CourseDetails(username=current_user.username,
-                                                       last_visited_course=course_dir.split(os.path.sep)[-2],
-                                                       last_visited_topic=last_visited_topic,
-                                                       last_visited_index=last_visited_index)
-                db.session.merge(current_course_details)
-                db.session.commit()
+                commit_current_course_details(username=current_user.username,
+                                              last_visited_course=course_dir.split(os.path.sep)[-2],
+                                              last_visited_topic=last_visited_topic,
+                                              last_visited_index=last_visited_index)
                 return redirect(url_for('main.courses') + f"/{folder}")
             if folder + ".html" not in folders:
                 '''
                 It is a folder, traverse inside it.
                 '''
-                current_path_details = CurrentPath(username=current_user.username, last_visited_directory=course_dir,
-                                                   last_visited_course=last_visited_course)
-                db.session.merge(current_path_details)
-                db.session.commit()
-
+                commit_current_path_details(username=current_user.username,
+                                            last_visited_directory=course_dir,
+                                            last_visited_course=last_visited_course)
                 '''
                 If the last visited topic is present in the folder, highlight the folder.
                 '''
@@ -96,10 +89,8 @@ def courses():
             course_dir = os.path.sep.join(course_dir.split(os.path.sep)[:-1])
             folders = natsort.natsorted(load_folder(course_dir))
             last_visited_course = course_dir.split(os.path.sep)[-1]
-            current_path_details = CurrentPath(username=current_user.username, last_visited_directory=course_dir,
-                                               last_visited_course=last_visited_course)
-            db.session.merge(current_path_details)
-            db.session.commit()
+            commit_current_path_details(username=current_user.username, last_visited_directory=course_dir,
+                                        last_visited_course=last_visited_course)
 
             if last_visited_topic in folders:
                 highlight_idx = folders.index(last_visited_topic)
@@ -125,20 +116,19 @@ Endpoint to load topics.
 @main.route("/courses/<topics>", methods=['GET', 'POST'])
 @login_required
 def topics(topics):
-    current_path_details = CurrentPath.query.filter_by(username=current_user.username).first()
+    current_path_details = get_current_path_details(current_user.username)
     course_dir = current_path_details.last_visited_directory
     last_visited_course = current_path_details.last_visited_course
-    current_course_details = CourseDetails.query.filter_by(username=current_user.username,
-                                                           last_visited_course=last_visited_course).first()
+    current_course_details = get_current_course_details(current_user.username, last_visited_course)
     topic_index = current_course_details.last_visited_index
     folders = natsort.natsorted(load_folder(course_dir))
 
     if topics in folders:
         topic_index = int(topics.split("-")[0])
-        current_course_details = CourseDetails(username=current_user.username, last_visited_course=last_visited_course,
-                                               last_visited_topic=topics, last_visited_index=topic_index)
-        db.session.merge(current_course_details)
-        db.session.commit()
+        commit_current_course_details(username=current_user.username,
+                                      last_visited_course=last_visited_course,
+                                      last_visited_topic=topics,
+                                      last_visited_index=topic_index)
     itr = topic_index
     toc = load_toc_if_exist(course_dir)
     if toc:
@@ -163,10 +153,10 @@ def topics(topics):
     '''
     GET request, this is used to refresh the webpage if required    
     '''
-    current_course_details = CourseDetails(username=current_user.username, last_visited_course=last_visited_course,
-                                           last_visited_topic=topic_folders[itr], last_visited_index=itr)
-    db.session.merge(current_course_details)
-    db.session.commit()
+    commit_current_course_details(username=current_user.username,
+                                  last_visited_course=last_visited_course,
+                                  last_visited_topic=topic_folders[itr],
+                                  last_visited_index=itr)
 
     template_folder = "/".join(course_dir[len(root_course_dir) + 1:].split(os.path.sep))
     webpage = f"{template_folder}/{topic_folders[itr]}/{topic_folders[itr]}.html"
@@ -213,10 +203,10 @@ def topics_toc(topics, course_dir, toc, itr):
     GET request, this is used to refresh the webpage if required    
     '''
     last_visited_course = course_dir.split(os.path.sep)[-1]
-    current_course_details = CourseDetails(username=current_user.username, last_visited_course=last_visited_course,
-                                           last_visited_topic=toc_items[itr]['title'], last_visited_index=itr)
-    db.session.merge(current_course_details)
-    db.session.commit()
+    commit_current_course_details(username=current_user.username,
+                                  last_visited_course=last_visited_course,
+                                  last_visited_topic=toc_items[itr]['title'],
+                                  last_visited_index=itr)
 
     template_folder = "/".join(course_dir[len(root_course_dir) + 1:].split(os.path.sep))
     webpage = f"{template_folder}/{toc_items[itr]['title']}/{toc_items[itr]['title']}.html"
@@ -233,7 +223,7 @@ Endpoint to load the code/quiz files in monaco editor
 @main.route("/courses/code/<codes>", methods=['GET', 'POST'])
 @login_required
 def codes(codes):
-    current_path_details = CurrentPath.query.filter_by(username=current_user.username).first()
+    current_path_details = get_current_path_details(current_user.username)
     course_dir = current_path_details.last_visited_directory
     directory_path = os.path.join(course_dir, codes)
     encoded_path = base64.b64encode(directory_path.encode()).decode()

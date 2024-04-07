@@ -4,8 +4,8 @@
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-      Repo Version : 4.0.3-dev
-
+      Repo Version : 4.0.4-dev
+      Folder named "instance" contains the db.sqlite file, delete it from v4.0.4
       This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
@@ -50,7 +50,7 @@
 
 ### Step 4: Start the viewer using the following commands:
 
-      flask run --host=0.0.0.0
+      flask run --host=0.0.0.0 --port=5000
 
       OR
 

@@ -8,19 +8,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Educative Viewer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
     <link rel="icon" type="image/x-icon" href="[([( url_for('static', filename='asset/icon.ico') )])]">
+    <link rel="stylesheet" href="[([( url_for('static', filename='css/bulma.min.css') )])]"/>
+    <script src="[([( url_for('static', filename='js/jquery-3.4.1.min.js') )])]"></script>
     <style>
         body::-webkit-scrollbar {
             display: none;
-            }
+        }
 
-            /* Hide scrollbar for IE, Edge and Firefox */
-            body {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-            }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        body {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
         .ui-datepicker-calendar {
             display: none;
         }
@@ -30,45 +31,45 @@
     [([(= endblock =)])]
 </head>
 
-<body class="hero is-primary is-fullheight"style="background-color: #000;">
-    
-        <div class="hero-head" style="padding: 0.5rem;">
-            <nav class="navbar">
-                <div class="container">
+<body class="hero is-primary is-fullheight" style="background-color: #000;">
 
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="[([( url_for('main.index') )])]" class="navbar-item">
-                                Home
-                            </a>
-                            [([(= if current_user.is_authenticated =)])]
-                            <a href="[([( url_for('main.courses') )])]" class="navbar-item">
-                                Courses
-                            </a>
-                            [([(= endif =)])]
-                            [([(= if not current_user.is_authenticated =)])]
-                            <a href="[([( url_for('auth.login') )])]" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="[([( url_for('auth.signup') )])]" class="navbar-item">
-                                Sign Up
-                            </a>
-                            [([(= endif =)])]
-                            [([(= if current_user.is_authenticated =)])]
-                            <a href="[([( url_for('auth.logout') )])]" class="navbar-item">
-                                Logout
-                            </a>
-                            [([(= endif =)])]
-                        </div>
-                    </div>
+<div class="hero-head" style="padding: 0.5rem;">
+    <nav class="navbar">
+        <div class="container">
+
+            <div id="navbarMenuHeroA" class="navbar-menu">
+                <div class="navbar-end">
+                    <a href="[([( url_for('main.index') )])]" class="navbar-item">
+                        Home
+                    </a>
+                    [([(= if current_user.is_authenticated =)])]
+                    <a href="[([( url_for('main.courses') )])]" class="navbar-item">
+                        Courses
+                    </a>
+                    [([(= endif =)])]
+                    [([(= if not current_user.is_authenticated =)])]
+                    <a href="[([( url_for('auth.login') )])]" class="navbar-item">
+                        Login
+                    </a>
+                    <a href="[([( url_for('auth.signup') )])]" class="navbar-item">
+                        Sign Up
+                    </a>
+                    [([(= endif =)])]
+                    [([(= if current_user.is_authenticated =)])]
+                    <a href="[([( url_for('auth.logout') )])]" class="navbar-item">
+                        Logout
+                    </a>
+                    [([(= endif =)])]
                 </div>
-            </nav>
+            </div>
         </div>
+    </nav>
+</div>
 
-        <div class="hero-body">
-               [([(= block content =)])]
-               [([(= endblock =)])]
+<div class="hero-body">
+    [([(= block content =)])]
+    [([(= endblock =)])]
 
-        </div>
+</div>
 </body>
 </html>
