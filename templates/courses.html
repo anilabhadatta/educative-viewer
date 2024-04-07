@@ -25,6 +25,15 @@
             display: none;
         }
     </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.focus-button');
+            buttons.forEach(function (button) {
+                button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
+                button.focus();
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="hero-head">
@@ -83,7 +92,7 @@
     </button>
     [([(= for folder in folder_list =)])]
     [([(= if [([(loop.index0)])] == [([(highlight_idx)])] =)])]
-    <input class="btn btn-primary btn-file" style="display: block; width: 100%; color: #0dfd10 !important;"
+    <input class="btn btn-primary btn-file focus-button" style="display: block; width: 100%; color: #0dfd10 !important;"
            type="submit" name="folder" value="[([(folder)])]">
     [([(= else =)])]
     <input class="btn btn-primary btn-file" style="display: block; width: 100%;" type="submit" name="folder"

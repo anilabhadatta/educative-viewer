@@ -43,14 +43,20 @@ def build_toc_render_items(toc, highlight_idx=0):
     curr_topic_idx = 0
     for item in toc["toc"]:
         if type(item) is dict:  # category
-            toc_items.append({"title": item["category"], "is_category": True, "color": "white"})
+            toc_items.append({"title": item["category"], "is_category": True, "color": "white", "focus": ""})
             for topic in item["topics"]:
-                toc_items.append({"title": topic[1], "is_category": False,
-                                  "color": "white" if curr_topic_idx != highlight_idx else "#0dfd10"})
+                temp_map = {"title": topic[1], "is_category": False, "color": "white", "focus": ""}
+                if curr_topic_idx == highlight_idx:
+                    temp_map["color"] = "#0dfd10"
+                    temp_map["focus"] = "focus-button"
+                toc_items.append(temp_map)
                 curr_topic_idx += 1
         else:  # assessments, projects, cloud labs..
-            toc_items.append({"title": item[1], "is_category": False,
-                              "color": "white" if curr_topic_idx != highlight_idx else "#0dfd10"})
+            temp_map = {"title": item[1], "is_category": False, "color": "white", "focus" : ""}
+            if curr_topic_idx == highlight_idx:
+                temp_map["color"] = "#0dfd10"
+                temp_map["focus"] = "focus-button"
+            toc_items.append(temp_map)
             curr_topic_idx += 1
     return toc_items
 
