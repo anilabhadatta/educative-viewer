@@ -192,7 +192,7 @@ div[class*="sidebar"] {
 }
 
 @media screen and (max-width: 1400px) {
-    div[class*="container"], #navbarMenuHeroA, div[class*="navbar-end"] {
+    div[class*="container"], #navbarMenuHeroA, div[class*="navbar-start"] {
         display: flex;
         background: rgba(21, 21, 30, 1);
     }
