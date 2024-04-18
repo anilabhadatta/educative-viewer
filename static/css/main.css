@@ -42,14 +42,16 @@ body,
 #code {
     position: fixed;
     bottom: 20px;
-    right: 285px;
+    /* right: 285px; */
+    right: 175px;
     z-index: 9999;
 }
 
 #code_filesystem {
     position: fixed;
     bottom: 20px;
-    right: 340px;
+    /* right: 340px; */
+    right: 230px;
     z-index: 9999;
 }
 
@@ -89,10 +91,11 @@ body,
 }
 
 #open-btn {
-    position: fixed;
     top: 0px;
     z-index: 9999;
     max-height: 45px;
+    background-color: rgba(21, 21, 30, 1) !important;
+    color: white !important;
 }
 
 textarea {
@@ -133,6 +136,29 @@ div[class*="sidebar"] {
     overflow-y: auto;
     background-color: rgba(21, 21, 30, 1);
     z-index: 99999999;
+}
+
+a[class*="navbar-item"], a#open-btn.navbar-item{
+    background-color: rgba(21, 21, 30, 1) !important;
+    color: white !important;
+}
+a.navbar-item:hover, a#open-btn.navbar-item:hover{
+    background-color: #00b89c !important;
+    color: white !important;
+}
+#navbarMenuHeroA{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(21, 21, 30, 1);
+    z-index: 99999999;
+}
+div[class*="navbar-start"]{
+    width: 230px;
+    position: fixed;
+    left: 39px;
+    top: 0px;
+    background-color: rgba(21, 21, 30, 1);
 }
 
 #sidebar-ul {
@@ -181,6 +207,11 @@ div[class*="sidebar"] {
 
 @media screen and (max-width: 600px) {
     div[class*="sidebar"] {
+        left: -300px;
+        /* position: absolute; */
+        z-index: 99999999;
+    }
+    div[class*="navbar-start topic"]{
         left: -300px;
         /* position: absolute; */
         z-index: 99999999;

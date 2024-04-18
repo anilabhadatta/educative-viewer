@@ -40,27 +40,27 @@
     <nav class="navbar" style="background: transparent;">
         <div class="container">
 
-            <div id="navbarMenuHeroA" class="navbar-menu">
+            <div id="navbarMenuHeroA" class="navbar-menu" style="position: relative;">
                 <!-- <h2 class="has-text-white navbar-item is-centered navbar-end">Educative Viewer</h2> -->
-                <div class="navbar-start">
-                    <a href="[([( url_for('main.index') )])]" class="navbar-item has-text-white">
+                <div class="navbar-start" style="position: relative;">
+                    <a href="[([( url_for('main.index') )])]" class="navbar-item">
                         Home
                     </a>
                     [([(= if current_user.is_authenticated =)])]
-                    <a href="[([( url_for('main.courses') )])]" class="navbar-item has-text-white">
+                    <a href="[([( url_for('main.courses') )])]" class="navbar-item">
                         Courses
                     </a>
                     [([(= endif =)])]
                     [([(= if not current_user.is_authenticated =)])]
-                    <a href="[([( url_for('auth.login') )])]" class="navbar-item has-text-white">
+                    <a href="[([( url_for('auth.login') )])]" class="navbar-item">
                         Login
                     </a>
-                    <a href="[([( url_for('auth.signup') )])]" class="navbar-item has-text-white">
+                    <a href="[([( url_for('auth.signup') )])]" class="navbar-item">
                         Sign Up
                     </a>
                     [([(= endif =)])]
                     [([(= if current_user.is_authenticated =)])]
-                    <a href="[([( url_for('auth.logout') )])]" class="navbar-item has-text-white">
+                    <a href="[([( url_for('auth.logout') )])]" class="navbar-item">
                         Logout
                     </a>
                     [([(= endif =)])]
