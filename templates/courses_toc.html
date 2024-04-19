@@ -51,13 +51,12 @@
                         Courses
                     </a>
                     [([(= endif =)])]
-                    [([(= if not current_user.is_authenticated =)])]
-                    <a href="[([( url_for('auth.login') )])]" class="navbar-item">
-                        Login
-                    </a>
-                    <a href="[([( url_for('auth.signup') )])]" class="navbar-item">
-                        Sign Up
-                    </a>
+                    [([(= if  current_user.is_authenticated =)])]
+                    <form class="navbar-item" action="[([( url_for('main.courses') )])]/download/[([(folder)])]" style=" padding: 0 0 0 0; border: none; outline: none;" method="POST">
+                        <input class="navbar-item"
+                               style="border: none; outline: none; color: [([(download_button_color)])]" type="submit" name="download"
+                               value="Download">
+                    </form>
                     [([(= endif =)])]
                     [([(= if current_user.is_authenticated =)])]
                     <a href="[([( url_for('auth.logout') )])]" class="navbar-item">

@@ -4,16 +4,25 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import jinja2
 
+from .os_utility import create_dir, delete_dir
+
 db = SQLAlchemy()
 ROOT_DIR = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
+OS_ROOT = os.path.join(os.path.expanduser('~'), 'EducativeViewer')
+DB_FILE_PATH = os.path.join(OS_ROOT, 'db.sqlite')
+
 
 
 def create_app():
-    app = Flask(__name__, static_url_path='/edu-viewer/static')
+    create_dir(OS_ROOT)
+    temp_folder_path = os.path.join(OS_ROOT, "temp")
+    delete_dir(temp_folder_path)
 
+    app = Flask(__name__, static_url_path='/edu-viewer/static')
     app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_FILE_PATH}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['UPLOAD_FOLDER'] = temp_folder_path
 
     # load course dir as templates folder
     course_dir = os.getenv('course_dir', '.')

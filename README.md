@@ -4,8 +4,9 @@
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-      Repo Version : 4.0.5
-      Folder named "instance" contains the db.sqlite file, delete it from v4.0.4
+      Repo Version : 4.0.9
+      db.sqlite file is present in {USER_HOME}/EducativeViewer
+      Delete the db file if updated to 4.0.9 (changes made in db table)
       This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
@@ -36,6 +37,7 @@
       set course_dir=<path to course folder>
       set FLASK_APP=educative-viewer
       set authtoken=<any random keystring>
+      set downloadtoken=<any random keystring>
       
 
 #### > (For MacOS/Linux)
@@ -46,6 +48,7 @@
       export course_dir=<path to folder>
       export FLASK_APP=educative-viewer
       export authtoken=<any random keystring>
+      export downloadtoken=<any random keystring>
       
 
 ### Step 4: Start the viewer using the following commands:
