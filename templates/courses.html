@@ -54,7 +54,7 @@
                     [([(= if  current_user.is_authenticated =)])]
                     <form class="navbar-item" action="[([( url_for('main.courses') )])]/download/[([(folder)])]" style=" padding: 0 0 0 0; border: none; outline: none;" method="POST">
                         <input class="navbar-item"
-                               style="border: none; outline: none; color: white" type="submit" name="download"
+                               style="border: none; outline: none; color: [([(download_button_color)])]" type="submit" name="download"
                                value="Download">
                     </form>
                     [([(= endif =)])]

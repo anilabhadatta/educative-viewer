@@ -1,13 +1,13 @@
 import base64
 import webbrowser
-from flask import Blueprint, jsonify, render_template, request, redirect, send_file, send_from_directory, url_for
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, send_file, send_from_directory, url_for
 from flask_login import login_required, current_user
 import natsort
 import os
 import shutil
 
-from .db_utility import get_current_path_details, get_current_course_details, commit_current_course_details, \
-    commit_current_path_details
+from .db_utility import commit_current_user_details, get_current_path_details, get_current_course_details, commit_current_course_details, \
+    commit_current_path_details, get_current_user_details
 from .os_utility import check_code_present, create_dir, delete_dir, load_topics, load_toc_if_exist, build_toc_render_items, \
     load_folder, build_folder_structure_for_monaco_sidebar
 
@@ -33,6 +33,15 @@ def courses():
     course_dir = root_course_dir
     temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username)
     delete_dir(temp_folder_path)
+
+    '''
+    Change the download button color based on the download access
+    '''
+    download_button_color = '#ed4444 !important'
+    current_user_details = get_current_user_details(current_user.username)
+    if current_user_details.downloadaccess:
+        download_button_color = '#82f382 !important'
+
 
     current_path_details = get_current_path_details(current_user.username)
     if current_path_details is not None:
@@ -84,8 +93,8 @@ def courses():
                 toc = load_toc_if_exist(course_dir)
                 if toc:
                     toc_items = build_toc_render_items(toc, highlight_idx)
-                    return render_template("courses_toc.html", toc_items=toc_items, folder=folder)
-                return render_template("courses.html", folder_list=folders, folder=folder, highlight_idx=highlight_idx)
+                    return render_template("courses_toc.html", toc_items=toc_items, folder=folder, download_button_color=download_button_color)
+                return render_template("courses.html", folder_list=folders, folder=folder, highlight_idx=highlight_idx, download_button_color=download_button_color)
         '''
         If above condition doesnt satisfy then Traversing out folders  but not exit the root_course_dir
         '''
@@ -99,7 +108,7 @@ def courses():
             if last_visited_topic in folders:
                 highlight_idx = folders.index(last_visited_topic)
             return render_template("courses.html", folder_list=folders, folder=last_visited_course,
-                                   highlight_idx=highlight_idx)
+                                   highlight_idx=highlight_idx, download_button_color=download_button_color)
     '''
     If above condition doesnt satisfy then it is a GET request
     '''
@@ -110,8 +119,8 @@ def courses():
     toc = load_toc_if_exist(course_dir)
     if toc:
         toc_items = build_toc_render_items(toc, highlight_idx)
-        return render_template("courses_toc.html", toc_items=toc_items, folder=folder)
-    return render_template("courses.html", folder_list=folders, folder=folder, highlight_idx=highlight_idx)
+        return render_template("courses_toc.html", toc_items=toc_items, folder=folder, download_button_color=download_button_color)
+    return render_template("courses.html", folder_list=folders, folder=folder, highlight_idx=highlight_idx, download_button_color=download_button_color)
 
 
 '''
@@ -271,8 +280,10 @@ def download(folder):
         course_dir = current_path_details.last_visited_directory
         
     if request.method == "POST":
+        if not current_user.downloadaccess:
+            return render_template("downloadaccess.html")
         '''
-        Traversing in folders
+        Copy the course directory to temp folder and zip it
         '''
         temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username, folder)
         delete_dir(temp_folder_path)
@@ -285,12 +296,29 @@ def download(folder):
 
 
 @main.route("/courses/tmp/<path:filepath>", methods=['POST', 'GET'])
+@login_required
 def file_download(filepath):
     temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username)
     try:
         return send_from_directory(temp_folder_path, filepath, as_attachment=True)
     except:
         return render_template("404.html", message="File does not exist")
+    
+
+@main.route("/courses/getdownloadaccess", methods=['POST', 'GET'])
+@login_required
+def getdownloadacess():
+    current_user_details = get_current_user_details(current_user.username)
+    message = ''
+    if request.method == "POST":
+        downloadtoken = request.form.get('downloadtoken')
+        if downloadtoken == os.getenv('downloadtoken', ''):
+            current_user_details.downloadaccess = True
+            commit_current_user_details(current_user_details)
+            return redirect(url_for('main.courses'))
+        else:
+            message = 'Please enter correct Download Token and try again.'
+    return render_template("downloadaccess.html", message=message)
     
 
 @main.errorhandler(404)

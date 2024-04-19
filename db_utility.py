@@ -1,4 +1,4 @@
-from .models import CurrentPath, CourseDetails
+from .models import CurrentPath, CourseDetails, User
 from . import db
 
 
@@ -24,4 +24,13 @@ def commit_current_path_details(username, last_visited_directory, last_visited_c
     current_path_details = CurrentPath(username=username, last_visited_directory=last_visited_directory,
                                        last_visited_course=last_visited_course)
     db.session.merge(current_path_details)
+    db.session.commit()
+
+
+def get_current_user_details(username):
+    return User.query.filter_by(username=username).first()
+
+
+def commit_current_user_details(current_user):
+    db.session.merge(current_user)
     db.session.commit()
