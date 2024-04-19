@@ -31,7 +31,7 @@ def courses():
     last_visited_topic = ""
     last_visited_index = 0
     course_dir = root_course_dir
-    temp_folder_path = os.path.join(OS_ROOT, "temp")
+    temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username)
     delete_dir(temp_folder_path)
 
     current_path_details = get_current_path_details(current_user.username)
@@ -274,20 +274,21 @@ def download(folder):
         '''
         Traversing in folders
         '''
-        temp_folder_path = os.path.join(OS_ROOT, "temp")
+        temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username, folder)
+        delete_dir(temp_folder_path)
         create_dir(temp_folder_path)
         temp_folder_course_dir = os.path.join(temp_folder_path, folder)
         shutil.copytree(course_dir, temp_folder_course_dir)
         shutil.make_archive(temp_folder_course_dir, 'zip', temp_folder_course_dir)
-        return redirect(url_for('main.courses') + f"/tmp/{folder}.zip")
+        return redirect(url_for('main.courses') + f"/tmp/{folder}/{folder}.zip")
     return redirect(url_for('main.courses'))
 
 
-@main.route("/courses/tmp/<filename>", methods=['POST', 'GET'])
-def file_download(filename):
-    temp_folder_path = os.path.join(OS_ROOT, "temp")
+@main.route("/courses/tmp/<path:filepath>", methods=['POST', 'GET'])
+def file_download(filepath):
+    temp_folder_path = os.path.join(OS_ROOT, "temp", current_user.username)
     try:
-        return send_from_directory(temp_folder_path, filename, as_attachment=True)
+        return send_from_directory(temp_folder_path, filepath, as_attachment=True)
     except:
         return render_template("404.html", message="File does not exist")
     
