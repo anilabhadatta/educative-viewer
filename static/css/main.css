@@ -138,11 +138,11 @@ div[class*="sidebar"] {
     z-index: 99999999;
 }
 
-a[class*="navbar-item"], a#open-btn.navbar-item{
+a[class*="navbar-item"], a#open-btn.navbar-item, form[class*="navbar-item"], input[class*="navbar-item"]{
     background-color: rgba(21, 21, 30, 1) !important;
     color: white !important;
 }
-a.navbar-item:hover, a#open-btn.navbar-item:hover{
+a.navbar-item:hover, a#open-btn.navbar-item:hover, form[class*="navbar-item"]:hover, input[class*="navbar-item"]:hover{
     background-color: #00b89c !important;
     color: white !important;
 }

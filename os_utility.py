@@ -2,6 +2,16 @@ import base64
 import glob
 import json
 import os
+import shutil
+
+
+def delete_dir(path):
+    if os.path.exists(path):
+        shutil.rmtree(path)
+
+def create_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 
 def check_code_present(course_dir, topic):

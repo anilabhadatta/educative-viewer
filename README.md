@@ -4,8 +4,8 @@
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
-      Repo Version : 4.0.5
-      Folder named "instance" contains the db.sqlite file, delete it from v4.0.4
+      Repo Version : 4.0.7
+      db.sqlite file is present in {USER_HOME}/EducativeViewer
       This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
 
 ## To Run this project using git clone and python:
