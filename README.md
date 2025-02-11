@@ -1,84 +1,186 @@
 # Educative Viewer
 
-## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
+A self-hosted web viewer for [Educative.io](https://www.educative.io/) courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
 
-### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
+> **Note:** This viewer is designed for courses scraped in **Dark Mode**.
 
-      Repo Version : 4.0.9
-      db.sqlite file is present in {USER_HOME}/EducativeViewer
-      Delete the db file if updated to 4.0.9 (changes made in db table)
-      This Viewer is Designed for Educative.io Courses scraped in DARK Mode.
+## Features
 
-## To Run this project using git clone and python:
+- 📚 Browse and read downloaded Educative.io courses
+- 🔐 Multi-user authentication with signup tokens
+- 📍 Automatic progress tracking (last visited course/topic)
+- 💻 Monaco editor for viewing code files
+- 📦 Download course folders as ZIP
+- 🐳 Docker deployment with systemd auto-start
+- 🌐 Remote access via Tailscale
 
-### Prerequisites:
+## Quick Start (Docker)
 
-      Git
-      Python 3.9+
-      OS: Win/Mac(Intel)/Linux(ARM/AMD)
+### Prerequisites
 
-### Step 1: Download & cd this project dir.
+- Docker & Docker Compose
+- Tailscale (optional, for remote access)
+- Courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper)
 
-      git clone https://github.com/anilabhadatta/educative-viewer.git
-      cd educative-viewer
+### 1. Clone & Configure
 
-### Step 2: Install the virtualenv package for python3 and create a virtual environment.
+```bash
+git clone https://github.com/anilabhadatta/educative-viewer.git
+cd educative-viewer
+```
 
-      pip3 install virtualenv
-      virtualenv env
+Edit `docker-compose.yml` to set your course directory:
 
-### Step 3: Activate the virtual env and install dependencies and set Env variables.
+```yaml
+volumes:
+  - /path/to/your/courses:/course_data:ro,Z  # Change this path
+  - ./data:/app/data:Z
+environment:
+  - authtoken=your-signup-token      # Token required during signup
+  - downloadtoken=your-download-token # Token for download access
+```
 
-#### > (For Windows)
+### 2. Install & Start Service
 
-      env\Scripts\activate
-      pip install -r requirements.txt
-      cd ..
-      set course_dir=<path to course folder>
-      set FLASK_APP=educative-viewer
-      set authtoken=<any random keystring>
-      set downloadtoken=<any random keystring>
-      
+```bash
+./start-educative-viewer.sh
+```
 
-#### > (For MacOS/Linux)
+This installs a systemd user service that:
+- Starts on boot (with lingering enabled)
+- Runs Docker Compose in background
+- Exposes port 5001 via Tailscale automatically
 
-      source env/bin/activate
-      pip3 install -r requirements.txt
-      cd ..
-      export course_dir=<path to folder>
-      export FLASK_APP=educative-viewer
-      export authtoken=<any random keystring>
-      export downloadtoken=<any random keystring>
-      
+### 3. Access
 
-### Step 4: Start the viewer using the following commands:
+| Method | URL |
+|--------|-----|
+| Local | http://localhost:5001/edu-viewer/ |
+| Tailscale | https://your-machine.ts.net/edu-viewer/ |
 
-      flask run --host=0.0.0.0 --port=5000
+## Service Management
 
-      OR
+```bash
+# Control service
+systemctl --user start educative-viewer
+systemctl --user stop educative-viewer
+systemctl --user restart educative-viewer
+systemctl --user status educative-viewer
 
-      gunicorn --workers=2 -b 0.0.0.0:5000 'educative-viewer:create_app()' --access-logfile ./educative-viewer/access.log --error-logfile ./educative-viewer/error.log --timeout 120000
+# View logs
+journalctl --user -u educative-viewer -f
+docker-compose logs -f
 
-#### > Enter local_server_ip:5000/edu-viewer in your desktop/mobile browser to open the viewer.
+# Tailscale
+tailscale serve status
+```
 
-     local_server_ip: Refers to the local ip in your ethernet/wifi adapter set by your router. eg: 192.168.1.111
+## Configuration
 
-#### > Refer the image below to get the course folder path, eg: "/Users/anilabhadatta/Documents/temp-course"
+### Environment Variables
 
-![image](https://i.imgur.com/sQQlJGI.jpg)
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `course_dir` | Path to courses inside container | `.` |
+| `authtoken` | Token required for user signup | `""` |
+| `downloadtoken` | Token for ZIP download access | `""` |
+| `EDUCATIVE_VIEWER_ROOT` | Database storage path | `~/EducativeViewer` |
 
-### (Optional) To build educative-viewer executable using pyinstaller:
+### Data Persistence
 
-#### Activate the Virtual Environment and Install the required modules for the project (Refer Step 2, 3, 4 above).
+The SQLite database stores user accounts and progress. With Docker, it's persisted to `./data/db.sqlite`.
 
-#### Install the pyinstaller package and run the following commands
+**Migrate existing database:**
 
-      pip3 install pyinstaller
+```bash
+mkdir -p ./data
+cp ~/EducativeViewer/db.sqlite ./data/
+```
 
-#### > (For Windows)
+## Course Directory Structure
 
-      pyinstaller --clean --add-data templates;templates --add-data static;static --onefile -i"icon.ico" educative-viewer.py
+Point `course_dir` to a folder containing scraped courses:
 
-#### > (For MacOS/Linux)
+```
+courses/
+├── course-name-1/
+│   ├── 01-introduction/
+│   │   ├── index.html
+│   │   └── ...
+│   └── 02-getting-started/
+└── course-name-2/
+```
 
-      pyinstaller --clean --add-data templates:templates --add-data static:static --onefile -i"icon.ico" educative-viewer.py
+![Course folder example](https://i.imgur.com/sQQlJGI.jpg)
+
+## Manual Installation (Without Docker)
+
+<details>
+<summary>Click to expand</summary>
+
+### Prerequisites
+
+- Python 3.12+
+- Git
+
+### Setup
+
+```bash
+git clone https://github.com/anilabhadatta/educative-viewer.git
+cd educative-viewer
+
+# Create virtual environment
+python -m venv env
+source env/bin/activate  # Windows: env\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export course_dir=/path/to/courses
+export FLASK_APP=educative-viewer
+export authtoken=your-token
+export downloadtoken=your-token
+
+# Run
+flask run --host=0.0.0.0 --port=5001
+```
+
+### Production (Gunicorn)
+
+```bash
+gunicorn --workers=2 -b 0.0.0.0:5001 'educative-viewer:create_app()' --timeout 120000
+```
+
+</details>
+
+## Version
+
+**4.0.9** — Delete existing `db.sqlite` if upgrading from older versions (schema changes).
+
+## Deployment on Azure
+
+This application is configured for a low-cost deployment on Azure Container Apps with scale-to-zero capabilities and persistent storage using Azure File Share.
+
+Infrastructure code is located in [infra/tofu/](infra/tofu/).
+
+### Prerequisites
+- [OpenTofu](https://opentofu.org/) installed.
+- Azure CLI installed and logged in (`az login`).
+- Docker image pushed to a registry (e.g., GHCR).
+
+### Steps
+1. Navigate to the infra directory: [infra/tofu/](infra/tofu/).
+2. Create a `terraform.tfvars` file (use `terraform.tfvars.example` as a template).
+3. Initialize: `tofu init`
+4. Deploy: `tofu apply`
+5. After deployment, upload your `courses` and `db.sqlite` to the created Azure File Share.
+
+### How it works
+- **Scaling:** The app scales to zero when not in use, incurring no costs for the container replicas.
+- **Persistence:** All data (SQLite DB and courses) is stored in Azure Files, which is mounted to `/mnt/azure` inside the container.
+- **Environment Variables:** `COURSE_DIR` and `EDUCATIVE_VIEWER_ROOT` are set to point to the mounted storage.
+
+## License
+
+See [LICENSE](LICENSE) file.

@@ -1,0 +1,68 @@
+[project]
+name = "educative-viewer"
+version = "4.0.9"
+description = "Self-hosted web viewer for Educative.io courses"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.0.2",
+    "flask-login>=0.6.3",
+    "flask-sqlalchemy>=3.1.1",
+    "natsort>=8.4.0",
+    "gunicorn>=21.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".pyright_config.json",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+ignore = [
+    # typing.TYPE_CHECKING.
+    "TC001",
+    "TC002",
+    "TC003",
+    # Module naming (project name has hyphen)
+    "N999",
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+# Allow assert statements in test files
+"tests/**/*.py" = ["S101"]
+"**/test_*.py" = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["guest_connect_service"]

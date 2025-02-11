@@ -1,0 +1,6 @@
+project_name     = "edu-viewer"
+location         = "East US"
+container_image  = "ghcr.io/GITHUB_USERNAME/educative-viewer:latest"
+auth_token       = "secure_auth_token"
+download_token   = "secure_download_token"
+secret_key       = "flask_secret_key"
