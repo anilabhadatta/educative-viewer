@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: "educative-viewer"
     restart: always
+    userns_mode: keep-id
     ports:
       - "5001:5001"
     volumes:
