@@ -1,0 +1,21 @@
+services:
+  viewer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "educative-viewer"
+    restart: always
+    userns_mode: keep-id
+    ports:
+      - "5001:5001"
+    volumes:
+      - /home/user/Downloads/educative/courses:/course_data:ro,Z
+      - ./data:/app/data:Z
+    environment:
+      - FLASK_APP=__init__.py
+      - COURSE_DIR=/course_data
+      - AUTHTOKEN=keystring
+      - DOWNLOADTOKEN=keystring
+      - EDUCATIVE_VIEWER_ROOT=/app/data
+    command: >-
+      python -c "from __init__ import create_app; app = create_app(); app.run(host='0.0.0.0', port=5001)"

@@ -1,0 +1,4 @@
+export course_dir=/run/media/user/0D8F88933DC4784E/educative/educative.io_scraper/scraped_data
+export FLASK_APP=educative-viewer
+export authtoken=keystring
+export downloadtoken=keystring
