@@ -11,7 +11,7 @@ Environment=DOCKER_HOST=unix:///run/user/%U/podman/podman.sock
 # Remove any existing container from previous run
 ExecStartPre=/usr/bin/docker rm -f educative-viewer || /bin/true
 # Use docker compose (Podman backend) OR podman-compose
-ExecStart=/usr/bin/docker compose up -d
+ExecStart=/usr/bin/docker compose up --build --detach
 ExecStartPost=/usr/bin/tailscale serve --bg 5001
 ExecStop=/usr/bin/docker compose down
 ExecStopPost=-/usr/bin/tailscale serve off
