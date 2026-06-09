@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=%h/Downloads/personal/educative/educative-viewer
+WorkingDirectory=%h/Downloads/educative/educative-viewer
 Environment=DOCKER_HOST=unix:///run/user/%U/podman/podman.sock
 # Remove any existing container from previous run
 ExecStartPre=/usr/bin/docker rm -f educative-viewer || /bin/true

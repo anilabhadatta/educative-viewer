@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Educative Viewer Service Installer
 # Installs systemd user service for Docker-based auto-start

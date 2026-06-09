@@ -9,7 +9,7 @@ services:
     ports:
       - "5001:5001"
     volumes:
-      - /home/user/Downloads/personal/educative/courses:/course_data:ro,Z
+      - /home/user/Downloads/educative/courses:/course_data:ro,Z
       - ./data:/app/data:Z
     environment:
       - FLASK_APP=__init__.py
