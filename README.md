@@ -1,6 +1,10 @@
 # Educative Viewer
 
 ## This project is made for easier readability of Educative.io courses downloaded using [Educative.io_Scraper](https://github.com/anilabhadatta/educative.io_scraper).
+## Try our new [Educative Viewer](https://github.com/Biraj2004/educative-viewer). Added Legacy support, to migrate follow the [README](https://github.com/Biraj2004/educative-viewer/blob/main/migration/README.md).
+
+<img width="2529" height="1191" alt="image" src="https://github.com/user-attachments/assets/ae6d0df5-e478-44eb-a85d-d06220301576" />
+
 
 ### Refer cloudflared tunneling docs to tunnel local servers via cloudflared generated urls or custom domains.
 
